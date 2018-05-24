@@ -1,12 +1,13 @@
 package mapClasses;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import javax.swing.JPanel;
 
 import allTiles.CityTile;
-import allTiles.PlainTile;
 import allTiles.OasisTile;
+import allTiles.PlainTile;
 
 public class TileMap extends JPanel
 {
@@ -47,6 +48,8 @@ public class TileMap extends JPanel
 				tiles[row][col] = tile;
 			}
 		}
+		
+		setPreferredSize(new Dimension(10 * TILE_SIZE_PIXELS, 10 * TILE_SIZE_PIXELS));
 	}
 	
 	public Rectangle getBoundsOfTile(int row, int col)

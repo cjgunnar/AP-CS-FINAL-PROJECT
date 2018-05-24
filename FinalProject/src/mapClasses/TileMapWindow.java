@@ -3,8 +3,10 @@ package mapClasses;
 
 import java.awt.EventQueue;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class TileMapWindow extends JFrame
@@ -20,6 +22,9 @@ public class TileMapWindow extends JFrame
 			+ "Source code for this project is available at " + GIT_HUB_REPO 
 			+ "\nCreated by " + author;
 	
+	public MapPanel mapPanel;
+	public GameOverPanel gameOverPanel;
+	
 	public TileMapWindow()
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,7 +32,15 @@ public class TileMapWindow extends JFrame
 		//setResizable(false);
 		setTitle(title);
 		
-		add(new MapPanel());
+		mapPanel = new MapPanel();
+		gameOverPanel = new GameOverPanel();
+		
+		JPanel contentPane = new JPanel();
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		contentPane.add(mapPanel);
+		contentPane.add(gameOverPanel);
+		
+		add(contentPane);
 	}
 	
 	public static void main(String[] args)

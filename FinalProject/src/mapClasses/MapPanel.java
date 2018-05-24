@@ -91,6 +91,14 @@ public class MapPanel extends JPanel
 		if(map.getTile(moveXPos + 1, moveYPos) != null)
 			map.getTile(moveXPos + 1, moveYPos).setVisibility(true);
 		
+		sp.UpdateInfo();
+		
+		//success
+		return true;
+	}
+	
+	public void cycle()
+	{
 		//update status
 		if(player.getOccupiedTile().getName().equals("desert"))
 		{
@@ -104,24 +112,21 @@ public class MapPanel extends JPanel
 		{
 			player.setThirst(100);
 		}
-		
+
 		if(player.getThirst() < 0)
 		{
-			System.out.println("You died of thirst");
+			setVisible(false);
+			//this window is in a jPanel in a jPanel in a layeredPane in a rootPane in a Jpanel in a TileMapWindow
+			//or something this is just wild west coding
+			TileMapWindow window = (TileMapWindow)this.getParent().getParent().getParent().getParent().getParent();
+			window.gameOverPanel.Display("You got too thirsty. That happens when wandering the desert. "
+					+ "Take care of yourself next time, alright? Go stop for a drink. \nYou know you want to.");
 		}
-		
-		sp.UpdateInfo();
-		
-		//success
-		return true;
-	}
-	
-	public void cycle()
-	{
-		//move everything
 		
 		
 		//perform game logic
+		
+		
 		
 		//repaint map
 		repaint();
