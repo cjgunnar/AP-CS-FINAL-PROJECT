@@ -2,7 +2,7 @@ package allTiles;
 
 import javax.swing.ImageIcon;
 
-import gameLogic.Tile;
+import mapClasses.Tile;
 
 public class PlainTile extends Tile
 {

@@ -1,4 +1,4 @@
-package gameLogic;
+package mapClasses;
 import java.awt.Image;
 
 public class Person

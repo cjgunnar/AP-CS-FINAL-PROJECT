@@ -1,4 +1,4 @@
-package gameLogic;
+package mapClasses;
 
 
 import java.awt.EventQueue;
@@ -27,7 +27,7 @@ public class TileMapWindow extends JFrame
 		//setResizable(false);
 		setTitle(title);
 		
-		add(new GameBoard());
+		add(new MapPanel());
 	}
 	
 	public static void main(String[] args)

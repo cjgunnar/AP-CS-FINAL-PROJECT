@@ -1,4 +1,4 @@
-package gameLogic;
+package mapClasses;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 

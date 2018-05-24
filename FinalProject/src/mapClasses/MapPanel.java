@@ -1,4 +1,4 @@
-package gameLogic;
+package mapClasses;
 
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
@@ -12,13 +12,10 @@ import javax.swing.JPanel;
  *
  */
 @SuppressWarnings("serial")
-public class GameBoard extends JPanel implements Runnable
+public class MapPanel extends JPanel
 {
 	/** Time between frames (ms) */
 	final static int FRAME_DELAY = 1;
-	
-	/** Provides the clock */
-	private Thread thread;
 	
 	/** The environment */
 	TileMap map;
@@ -30,7 +27,7 @@ public class GameBoard extends JPanel implements Runnable
 	private Player player;
 	
 	/** Create the Board  */
-	public GameBoard()
+	public MapPanel()
 	{
 		player = new Player();
 		
@@ -125,6 +122,9 @@ public class GameBoard extends JPanel implements Runnable
 		
 		
 		//perform game logic
+		
+		//repaint map
+		repaint();
 	}
 	
 	/**
@@ -171,92 +171,15 @@ public class GameBoard extends JPanel implements Runnable
 				movePlayer(1, 0);
 			}
 			
-			repaint();
+			//everytime player moves, update everything
+			cycle();
 		}
 		
 		@Override
 		public void keyReleased(KeyEvent e)
 		{
-			/*
-			int key = e.getKeyCode();
-			
-			//stop moving when key released
-			if(key == UP)
-			{
-				
-			}
-			else if(key == DOWN)
-			{
-				
-			}
-			else if(key == LEFT)
-			{
-				
-			}
-			else if(key == RIGHT)
-			{
-				
-			}
-			*/
+			//
 		}
 		
-	}
-
-	@Override
-	public void addNotify()
-	{
-		super.addNotify();
-		
-		thread = new Thread(this);
-        //thread.start();
-	}
-	
-	@Override
-	public void run()
-	{
-		/*
-		 * Thread based time allows for the most accurate frame rates
-		 * It runs on a infinite loop, but sleeps based on calculated
-		 * running times of cycle (the main loop) and
-		 * repaint (redraws graphics)
-		 * Ends when frame is closed
-		 */
-		
-		//JOptionPane.showMessageDialog(null, "Press OK to Begin");
-		
-		long beforeTime, timeDiff, sleep;
-
-		beforeTime = System.currentTimeMillis();
-		
-		//broken when Board destroyed (X Button)
-		while(true) 
-		{
-			//run logic proccesses and redraw graphics
-			cycle();
-			repaint();
-
-			//calculate time between frames
-			timeDiff = System.currentTimeMillis() - beforeTime;
-			sleep = FRAME_DELAY - timeDiff;
-
-			//catch negative problems
-			if (sleep < 0) 
-			{
-				sleep = 2;
-			}
-
-			try 
-			{
-				//sleep extra time
-				Thread.sleep(sleep);
-			}
-			catch (InterruptedException e) 
-			{
-				System.out.println("Interrupted: " + e.getMessage());
-			}
-
-			//reset before time
-			beforeTime = System.currentTimeMillis();
-		}
 	}
 }

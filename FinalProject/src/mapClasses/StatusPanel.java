@@ -1,4 +1,4 @@
-package gameLogic;
+package mapClasses;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
