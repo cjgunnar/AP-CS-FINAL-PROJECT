@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import allTiles.CityTile;
 import allTiles.OasisTile;
 import allTiles.PlainTile;
+import peopleObjects.Bandit;
 
 public class TileMap extends JPanel
 {
@@ -37,13 +38,17 @@ public class TileMap extends JPanel
 			{
 				Tile tile;
 				
-				double rand = Math.random() * 10;
-				if(rand < 0.1)
+				double rand = Math.random() * 100;
+				if(rand < 1)
 					tile = new OasisTile();
-				else if(rand < 0.2)
+				else if(rand < 2)
 					tile = new CityTile();
 				else
 					tile = new PlainTile("desert");
+				
+				double rand2 = Math.random() * 100;
+				if(rand2 < 1)
+					tile.addPerson(new Bandit());
 
 				tiles[row][col] = tile;
 			}

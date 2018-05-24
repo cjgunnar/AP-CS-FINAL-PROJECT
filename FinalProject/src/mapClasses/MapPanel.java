@@ -43,6 +43,8 @@ public class MapPanel extends JPanel
 		add(sp, BorderLayout.NORTH);
 		add(ip, BorderLayout.SOUTH);
 		
+		sp.UpdateInfo();
+		
 		//add the input handler to listen for keys
 		addKeyListener(new InputHandler());
 		//allow the board to listen to key events
@@ -121,9 +123,11 @@ public class MapPanel extends JPanel
 					+ "Take care of yourself next time, alright? Go stop for a drink. \nYou know you want to.");
 		}
 		
+		//update status bar
 		sp.UpdateInfo();
-		//perform game logic
 		
+		
+		//perform game logic
 		
 		
 		//repaint map

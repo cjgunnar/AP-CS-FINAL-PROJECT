@@ -40,17 +40,20 @@ public class Tile
 			
 			//draw picture
 			g.drawImage(image, x, y, null);
+			
+			//draw people
+			for(Person person : people)
+			{
+				if(true) //debug
+				{
+					g.drawImage(person.getImage(), x, y, null);
+				}
+			}
 		}
 			
 		else
-			g.drawImage(cloudLayerImage, x, y, null);
-		
-		for(Person person : people)
 		{
-			if(person.isPlayer)
-			{
-				g.drawImage(person.getImage(), x, y, null);
-			}
+			g.drawImage(cloudLayerImage, x, y, null);
 		}
 	}
 	
