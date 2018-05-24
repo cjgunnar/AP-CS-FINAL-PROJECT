@@ -91,8 +91,6 @@ public class MapPanel extends JPanel
 		if(map.getTile(moveXPos + 1, moveYPos) != null)
 			map.getTile(moveXPos + 1, moveYPos).setVisibility(true);
 		
-		sp.UpdateInfo();
-		
 		//success
 		return true;
 	}
@@ -123,7 +121,7 @@ public class MapPanel extends JPanel
 					+ "Take care of yourself next time, alright? Go stop for a drink. \nYou know you want to.");
 		}
 		
-		
+		sp.UpdateInfo();
 		//perform game logic
 		
 		
