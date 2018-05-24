@@ -25,6 +25,12 @@ public class TileMapWindow extends JFrame
 	public MapPanel mapPanel;
 	public GameOverPanel gameOverPanel;
 	
+	public void Restart()
+	{
+		this.dispose();
+		Start();
+	}
+	
 	public TileMapWindow()
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,7 +39,7 @@ public class TileMapWindow extends JFrame
 		setTitle(title);
 		
 		mapPanel = new MapPanel();
-		gameOverPanel = new GameOverPanel();
+		gameOverPanel = new GameOverPanel(this);
 		
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
@@ -44,6 +50,11 @@ public class TileMapWindow extends JFrame
 	}
 	
 	public static void main(String[] args)
+	{
+		Start();
+	}
+	
+	public static void Start()
 	{
 		//for thread safety
 		EventQueue.invokeLater(new Runnable() 
@@ -56,7 +67,7 @@ public class TileMapWindow extends JFrame
 				{
 					return;
 				}
-				
+
 				JFrame app = new TileMapWindow();
 				app.setVisible(true);
 			}

@@ -92,6 +92,18 @@ public class MapPanel extends JPanel
 		//tile right
 		if(map.getTile(moveXPos + 1, moveYPos) != null)
 			map.getTile(moveXPos + 1, moveYPos).setVisibility(true);
+		//tile upper left
+		if(map.getTile(moveXPos - 1, moveYPos - 1) != null)
+			map.getTile(moveXPos - 1, moveYPos - 1).setVisibility(true);
+		//tile upper right
+		if(map.getTile(moveXPos - 1, moveYPos + 1) != null)
+			map.getTile(moveXPos - 1, moveYPos + 1).setVisibility(true);
+		//tile lower left
+		if(map.getTile(moveXPos + 1, moveYPos - 1) != null)
+			map.getTile(moveXPos + 1, moveYPos - 1).setVisibility(true);
+		//tile lower right
+		if(map.getTile(moveXPos + 1, moveYPos + 1) != null)
+			map.getTile(moveXPos + 1, moveYPos + 1).setVisibility(true);
 		
 		//success
 		return true;
