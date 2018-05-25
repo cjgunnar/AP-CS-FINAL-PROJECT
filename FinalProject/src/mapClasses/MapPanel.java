@@ -31,10 +31,13 @@ public class MapPanel extends JPanel
 	/** Create the Board  */
 	public MapPanel(TileMapWindow window)
 	{
+		//reference to window
 		this.window = window;
 		
+		//create a new player
 		player = new Player();
 		
+		//create UI pieces
 		map = new TileMap(player);
 		sp = new StatusPanel(player);
 		InventoryPanel ip = new InventoryPanel(player);
@@ -42,11 +45,16 @@ public class MapPanel extends JPanel
 		map.getTile(0, 0).setVisibility(true);
 		movePlayer(0, 0);
 		
+		//refill player thirst at start
+		player.setThirst(100);
+		
+		//add UI pieces
 		setLayout(new BorderLayout());
 		add(map, BorderLayout.CENTER);
 		add(sp, BorderLayout.NORTH);
 		add(ip, BorderLayout.SOUTH);
 		
+		//initialize status panel with values
 		sp.UpdateInfo();
 		
 		//add the input handler to listen for keys
@@ -109,13 +117,8 @@ public class MapPanel extends JPanel
 		if(map.getTile(moveXPos + 1, moveYPos + 1) != null)
 			map.getTile(moveXPos + 1, moveYPos + 1).setVisibility(true);
 		
-		//success
-		return true;
-	}
-	
-	public void cycle()
-	{
-		//update status
+		//update status if moving was successful
+		//update based on terrain
 		if(player.getOccupiedTile().getName().equals("desert"))
 		{
 			player.setThirst(player.getThirst() - 5);
@@ -137,7 +140,13 @@ public class MapPanel extends JPanel
 			window.showGameOverPanel("You got too thirsty. That happens when wandering the desert. "
 					+ "Take care of yourself next time, alright? Go stop for a drink. \nYou know you want to.");
 		}
-				
+		
+		//success
+		return true;
+	}
+	
+	public void cycle()
+	{		
 		//update status bar
 		sp.UpdateInfo();
 		
