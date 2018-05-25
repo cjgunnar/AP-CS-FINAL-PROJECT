@@ -19,16 +19,45 @@ public class TileMapWindow extends JFrame
 	
 	static final String title = "Game Window";
 	static final String instructions = "Click OK to start game.\n"
-			+ "Source code for this project is available at " + GIT_HUB_REPO 
+			+ "Source code for this project is available at: \n" + GIT_HUB_REPO 
 			+ "\nCreated by " + author;
 	
-	public MapPanel mapPanel;
-	public GameOverPanel gameOverPanel;
+	private MapPanel mapPanel;
+	private EventPanel eventPanel;
+	private GameOverPanel gameOverPanel;
 	
 	public void Restart()
 	{
 		this.dispose();
 		Start();
+	}
+	
+	public EventPanel getEventPanel()
+	{
+		return eventPanel;
+	}
+	
+	public void showEventPanel()
+	{
+		mapPanel.setVisible(false);
+		eventPanel.setVisible(true);
+		gameOverPanel.setVisible(false);
+	}
+	
+	public void showMapPanel()
+	{
+		mapPanel.setVisible(true);
+		eventPanel.setVisible(false);
+		gameOverPanel.setVisible(false);
+	}
+	
+	public void showGameOverPanel(String deathReasonText)
+	{
+		mapPanel.setVisible(false);
+		eventPanel.setVisible(false);
+		gameOverPanel.setVisible(true);
+		
+		gameOverPanel.Display(deathReasonText);
 	}
 	
 	public TileMapWindow()
@@ -38,12 +67,14 @@ public class TileMapWindow extends JFrame
 		//setResizable(false);
 		setTitle(title);
 		
-		mapPanel = new MapPanel();
+		mapPanel = new MapPanel(this);
+		eventPanel = new EventPanel(this);
 		gameOverPanel = new GameOverPanel(this);
 		
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		contentPane.add(mapPanel);
+		contentPane.add(eventPanel);
 		contentPane.add(gameOverPanel);
 		
 		add(contentPane);

@@ -1,6 +1,11 @@
 package mapClasses;
 import java.awt.Image;
 
+/**
+ * A person who can occupy a tile and has health, hunger, thirst, name, etc
+ * @author Caden
+ *
+ */
 public class Person
 {
 	Tile occupiedTile;
@@ -15,9 +20,20 @@ public class Person
 	private int health;
 	private int hunger;
 	private int thirst;
+	private int gold;
 	
-	public Person()
+	String name;
+	
+	/**
+	 * Create a new person with default values
+	 * <p>
+	 * Hunger, thirst, and health = 100
+	 * @param name
+	 */
+	public Person(String name)
 	{
+		this.name = name;
+		
 		isPlayer = false;
 		
 		health = 100;
@@ -25,31 +41,60 @@ public class Person
 		thirst = 100;
 	}
 	
+	/**
+	 * Returns the image used to display this perosn
+	 * @return
+	 */
 	public Image getImage()
 	{
 		return image;
 	}
 	
+	/**
+	 * Gets the row of the tile the person is occupying
+	 * @return
+	 */
 	public int getRow()
 	{
 		return row;
 	}
 	
+	/**
+	 * Set the row of the tile the person is occupying
+	 * @param row
+	 */
 	public void setRow(int row)
 	{
 		this.row = row;
 	}
 	
+	/**
+	 * Get the column of the tile the person is occupying
+	 * @return
+	 */
 	public int getCol()
 	{
 		return col;
 	}
 	
+	/**
+	 * Set the column of the tile the person is occupying
+	 * @param col
+	 */
 	public void setCol(int col)
 	{
 		this.col = col;
 	}
 
+	/**
+	 * Returns the name of this person, capital letter first
+	 * @return name of person
+	 */
+	public String getName()
+	{
+		return name;
+	}
+	
 	/**
 	 * @return the occupiedTile
 	 */
@@ -112,5 +157,30 @@ public class Person
 	public void setThirst(int thirst)
 	{
 		this.thirst = thirst;
+	}
+
+	/**
+	 * @return the gold
+	 */
+	public int getGold()
+	{
+		return gold;
+	}
+
+	/**
+	 * @param gold the gold to set
+	 */
+	public void setGold(int amount)
+	{
+		this.gold = amount;
+	}
+	
+	/**
+	 * Add to gold supply the amount of gold
+	 * @param gold
+	 */
+	public void addGold(int amount)
+	{
+		this.gold += amount;
 	}
 }

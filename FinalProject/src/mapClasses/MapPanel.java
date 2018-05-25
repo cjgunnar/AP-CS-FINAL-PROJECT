@@ -26,9 +26,13 @@ public class MapPanel extends JPanel
 	/** The player */
 	private Player player;
 	
+	TileMapWindow window;
+	
 	/** Create the Board  */
-	public MapPanel()
+	public MapPanel(TileMapWindow window)
 	{
+		this.window = window;
+		
 		player = new Player();
 		
 		map = new TileMap(player);
@@ -130,20 +134,22 @@ public class MapPanel extends JPanel
 			setVisible(false);
 			//this window is in a jPanel in a jPanel in a layeredPane in a rootPane in a Jpanel in a TileMapWindow
 			//or something this is just wild west coding
-			TileMapWindow window = (TileMapWindow)this.getParent().getParent().getParent().getParent().getParent();
-			window.gameOverPanel.Display("You got too thirsty. That happens when wandering the desert. "
+			window.showGameOverPanel("You got too thirsty. That happens when wandering the desert. "
 					+ "Take care of yourself next time, alright? Go stop for a drink. \nYou know you want to.");
 		}
-		
+				
 		//update status bar
 		sp.UpdateInfo();
 		
 		
-		//perform game logic
+		//perform other game logic
 		
 		
 		//repaint map
 		repaint();
+		
+		//run events
+		player.getOccupiedTile().runEvents(window.getEventPanel());
 	}
 	
 	/**

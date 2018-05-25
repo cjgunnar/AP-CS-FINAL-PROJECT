@@ -1,9 +1,9 @@
 package mapClasses;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,7 +28,7 @@ public class GameOverPanel extends JPanel
 	
 	private void CreateComponents()
 	{
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		deathMessage = new JLabel("You Have Died. Shame.");
 		
