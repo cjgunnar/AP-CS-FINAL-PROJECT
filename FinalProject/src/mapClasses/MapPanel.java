@@ -24,7 +24,7 @@ public class MapPanel extends JPanel
 	StatusPanel sp;
 	
 	/** The player */
-	private Player player;
+	public static Player player;
 	
 	TileMapWindow window;
 	

@@ -46,7 +46,7 @@ public class EventPanel extends JPanel
 		});
 		returnMap.setVisible(false);
 		
-		eventText = new JTextArea(10, 5);
+		eventText = new JTextArea(10, 10);
 		eventText.setEditable(false);
 		
 		optionsPanel = new JPanel();

@@ -26,6 +26,8 @@ public class TileMapWindow extends JFrame
 	private EventPanel eventPanel;
 	private GameOverPanel gameOverPanel;
 	
+	public static TileMapWindow window;
+	
 	public void Restart()
 	{
 		this.dispose();
@@ -62,6 +64,8 @@ public class TileMapWindow extends JFrame
 	
 	public TileMapWindow()
 	{
+		if(window != null) return;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(WIDTH, HEIGHT);
 		//setResizable(false);
@@ -99,8 +103,8 @@ public class TileMapWindow extends JFrame
 					return;
 				}
 
-				JFrame app = new TileMapWindow();
-				app.setVisible(true);
+				window = new TileMapWindow();
+				window.setVisible(true);
 			}
 		});
 	}
