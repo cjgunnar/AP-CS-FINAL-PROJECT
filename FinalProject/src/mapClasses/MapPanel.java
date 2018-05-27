@@ -42,8 +42,10 @@ public class MapPanel extends JPanel
 		sp = new StatusPanel(player);
 		InventoryPanel ip = new InventoryPanel(player);
 		
-		map.getTile(0, 0).setVisibility(true);
-		movePlayer(0, 0);
+		map.setCenterPos(player.getX(), player.getY());
+		
+		//map.getTile(player.getX(), player.getY()).setVisibility(true);
+		movePlayer(player.getX(), player.getY());
 		
 		//refill player thirst at start
 		player.setThirst(100);
@@ -55,7 +57,7 @@ public class MapPanel extends JPanel
 		add(ip, BorderLayout.SOUTH);
 		
 		//initialize status panel with values
-		sp.UpdateInfo();
+		//sp.UpdateInfo();
 		
 		//add the input handler to listen for keys
 		addKeyListener(new InputHandler());
@@ -70,27 +72,32 @@ public class MapPanel extends JPanel
 	 * @return true if success, false if no tiles available in that direction
 	 */
 	boolean movePlayer(int dx, int dy)
-	{
-		int xPos = player.getCol();
-		int yPos = player.getRow();
+	{	
+		int xPos = player.getX();
+		int yPos = player.getY();
 		
 		int moveXPos = xPos + dx;
 		int moveYPos = yPos + dy;
 		
+		//System.out.println("Moving player to (" + moveXPos + "," + moveYPos + ")");
+		
 		//check not going off screen
+		/*
 		if(moveXPos < 0) return false;
 		if(moveYPos < 0) return false;
 		if(moveXPos >= TileMap.NUM_COLS) return false;
 		if(moveYPos >= TileMap.NUM_ROWS) return false;
+		*/
 		
-		player.setCol(moveXPos);
-		player.setRow(moveYPos);
+		player.setX(moveXPos);
+		player.setY(moveYPos);
 		
-		map.getTile(xPos, yPos).removePerson(player);
-		map.getTile(moveXPos, moveYPos).addPerson(player);
+		//map.getTile(xPos, yPos).removePerson(player);
+		//map.getTile(moveXPos, moveYPos).addPerson(player);
 		
-		player.setOccupiedTile(map.getTile(moveXPos, moveYPos));
+		//player.setOccupiedTile(map.getTile(moveXPos, moveYPos));
 		
+		/*
 		//make surroundings visible
 		//tile above
 		if(map.getTile(moveXPos, moveYPos - 1) != null)
@@ -116,30 +123,31 @@ public class MapPanel extends JPanel
 		//tile lower right
 		if(map.getTile(moveXPos + 1, moveYPos + 1) != null)
 			map.getTile(moveXPos + 1, moveYPos + 1).setVisibility(true);
+		*/
 		
-		//update status if moving was successful
-		//update based on terrain
-		if(player.getOccupiedTile().getName().equals("desert"))
-		{
-			player.setThirst(player.getThirst() - 5);
-		}
-		else if(player.getOccupiedTile().getName().equals("Oasis"))
-		{
-			player.setThirst(100);
-		}
-		else if(player.getOccupiedTile().getName().equals("City"))
-		{
-			player.setThirst(100);
-		}
-
-		if(player.getThirst() < 0)
-		{
-			setVisible(false);
-			//this window is in a jPanel in a jPanel in a layeredPane in a rootPane in a Jpanel in a TileMapWindow
-			//or something this is just wild west coding
-			window.showGameOverPanel("You got too thirsty. That happens when wandering the desert. "
-					+ "Take care of yourself next time, alright? Go stop for a drink. \nYou know you want to.");
-		}
+//		//update status if moving was successful
+//		//update based on terrain
+//		if(player.getOccupiedTile().getName().equals("desert"))
+//		{
+//			player.setThirst(player.getThirst() - 5);
+//		}
+//		else if(player.getOccupiedTile().getName().equals("Oasis"))
+//		{
+//			player.setThirst(100);
+//		}
+//		else if(player.getOccupiedTile().getName().equals("City"))
+//		{
+//			player.setThirst(100);
+//		}
+//
+//		if(player.getThirst() < 0)
+//		{
+//			setVisible(false);
+//			//this window is in a jPanel in a jPanel in a layeredPane in a rootPane in a Jpanel in a TileMapWindow
+//			//or something this is just wild west coding
+//			window.showGameOverPanel("You got too thirsty. That happens when wandering the desert. "
+//					+ "Take care of yourself next time, alright? Go stop for a drink. \nYou know you want to.");
+//		}
 		
 		//success
 		return true;
@@ -148,17 +156,19 @@ public class MapPanel extends JPanel
 	public void cycle()
 	{		
 		//update status bar
-		sp.UpdateInfo();
+		//sp.UpdateInfo();
 		
 		
 		//perform other game logic
 		
+		//regenerate map
+		map.setCenterPos(player.getX(), player.getY());
 		
 		//repaint map
 		repaint();
 		
 		//run events
-		player.getOccupiedTile().runEvents(window.getEventPanel());
+		//player.getOccupiedTile().runEvents(window.getEventPanel());
 	}
 	
 	/**
