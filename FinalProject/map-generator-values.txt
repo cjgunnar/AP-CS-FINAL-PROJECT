@@ -1,6 +1,6 @@
 map-generator-values. frequency, power, water elevation, desert elevation, savanna elevation, grassland elevation
-0.1		#frequency
-2		#power
+0.001	#frequency
+1.5		#power
 .01		#water elevation
 0.3		#desert elevation
 0.5		#savanna elevation

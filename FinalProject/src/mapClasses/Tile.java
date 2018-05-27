@@ -47,7 +47,7 @@ public class Tile
 	public enum BIOME
 	{
 		OCEAN("/biome_ocean.png"),
-		COAST("/biome_desert.png"),
+		COAST("/biome_coast.png"),
 		
 		ICE_SHEET("/biome_ice_sheet.png"),
 		TUNDRA("/biome_tundra.png"),

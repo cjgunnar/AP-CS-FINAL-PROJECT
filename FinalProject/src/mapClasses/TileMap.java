@@ -14,8 +14,8 @@ public class TileMap extends JPanel
 	 */
 	private static final long serialVersionUID = -1914987204901582447L;
 	
-	public static final int NUM_ROWS = 100;
-	public static final int NUM_COLS = 100;
+	public static final int NUM_ROWS = 30;
+	public static final int NUM_COLS = 30;
 	
 	public static int TILE_SIZE_PIXELS = 100;
 	
@@ -27,7 +27,7 @@ public class TileMap extends JPanel
 	{
 		this.player = player;
 		
-		tiles = MapGenerator.generateMap(42, NUM_ROWS);
+		tiles = MapGenerator.generateMap((int)(Math.random() * 100), NUM_ROWS);
 		
 		setPreferredSize(new Dimension(10 * TILE_SIZE_PIXELS, 10 * TILE_SIZE_PIXELS));
 	}
