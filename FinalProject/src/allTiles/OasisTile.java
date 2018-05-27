@@ -8,7 +8,7 @@ public class OasisTile extends Tile
 {
 	public OasisTile()
 	{
-		super("desert");
+		super(BIOME.DESERT);
 		
 		name = "Oasis";
 		

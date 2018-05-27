@@ -15,7 +15,7 @@ public class Tile
 	private ArrayList<Person> people;
 	
 	protected String name;
-	protected String biome;
+	protected BIOME biome;
 	
 	private Image biomeImage;
 	
@@ -23,18 +23,48 @@ public class Tile
 	
 	protected ArrayList<MapEvent> events;
 	
-	public Tile(String biome)
+	public Tile(BIOME biome)
 	{
 		this.biome = biome;
 		
-		this.biomeImage = new ImageIcon(this.getClass().getResource("/biome_desert.png")).getImage();
+		name = "default";
+
+		this.biomeImage = new ImageIcon(this.getClass().getResource(biome.imageLocation)).getImage();
 		
 		people = new ArrayList<Person>();
 		hasPlayer = false;
-		isVisible= false;
+		isVisible = true;
 		
 		events = new ArrayList<MapEvent>();
 		CreateEvents();
+	}
+	
+	/**
+	 * The types of biomes
+	 * @author Caden
+	 *
+	 */
+	public enum BIOME
+	{
+		OCEAN("/biome_ocean.png"),
+		COAST("/biome_desert.png"),
+		
+		ICE_SHEET("/biome_ice_sheet.png"),
+		TUNDRA("/biome_tundra.png"),
+		PINE_FOREST("/biome_pine_forest.png"),
+		SCHRUBLAND("/biome_schrubland.png"),
+		GRASSLAND("/biome_grassland.png"),
+		DECIDIOUS_FOREST("/biome_decidious_forest.png"),
+		DESERT("/biome_desert.png"),
+		SAVANNA("/biome_savanna.png"),
+		RAINFOREST("/biome_rainforest.png");
+		
+		public String imageLocation;
+		
+		private BIOME(String imageLocation)
+		{
+			this.imageLocation = imageLocation;
+		}
 	}
 	
 	private void CreateEvents()
@@ -118,17 +148,25 @@ public class Tile
 	 * @param y upper left y coordinate
 	 * @param g Graphics to draw to
 	 */
-	public void drawTile(int x, int y, Graphics g)
+	public void drawTile(int x, int y, int size, Graphics g)
 	{
 		Image cloudLayerImage =  new ImageIcon(this.getClass().getResource("/cloudLayer.png")).getImage();
 		
 		if(isVisible)
 		{
-			//draw background
-			g.drawImage(biomeImage, x, y, null);
+			try
+			{
+				//draw background
+				g.drawImage(biomeImage, x, y, null);
+				
+				//draw picture
+				g.drawImage(image, x, y, null);
+			}
+			catch(Exception e)
+			{
+				System.err.println("Tile: no image found");
+			}
 			
-			//draw picture
-			g.drawImage(image, x, y, null);
 			
 			//draw people
 			for(Person person : people)

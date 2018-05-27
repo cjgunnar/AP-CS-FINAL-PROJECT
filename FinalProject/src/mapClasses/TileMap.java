@@ -5,10 +5,7 @@ import java.awt.Rectangle;
 
 import javax.swing.JPanel;
 
-import allTiles.CityTile;
-import allTiles.OasisTile;
-import allTiles.PlainTile;
-import peopleObjects.Bandit;
+import mapGen.MapGenerator;
 
 public class TileMap extends JPanel
 {
@@ -17,8 +14,8 @@ public class TileMap extends JPanel
 	 */
 	private static final long serialVersionUID = -1914987204901582447L;
 	
-	public static final int NUM_ROWS = 20;
-	public static final int NUM_COLS = 20;
+	public static final int NUM_ROWS = 100;
+	public static final int NUM_COLS = 100;
 	
 	public static int TILE_SIZE_PIXELS = 100;
 	
@@ -30,29 +27,7 @@ public class TileMap extends JPanel
 	{
 		this.player = player;
 		
-		tiles = new Tile[NUM_ROWS][NUM_COLS];
-		
-		for(int row = 0; row < NUM_ROWS; row++)
-		{
-			for(int col = 0; col < NUM_COLS; col++)
-			{
-				Tile tile;
-				
-				double rand = Math.random() * 100;
-				if(rand < 1)
-					tile = new OasisTile();
-				else if(rand < 2)
-					tile = new CityTile();
-				else
-					tile = new PlainTile("desert");
-				
-				double rand2 = Math.random() * 100;
-				if(rand2 < 1)
-					tile.addPerson(new Bandit());
-
-				tiles[row][col] = tile;
-			}
-		}
+		tiles = MapGenerator.generateMap(42, NUM_ROWS);
 		
 		setPreferredSize(new Dimension(10 * TILE_SIZE_PIXELS, 10 * TILE_SIZE_PIXELS));
 	}
@@ -119,7 +94,7 @@ public class TileMap extends JPanel
 				int x = row * TILE_SIZE_PIXELS;
 				int y = col * TILE_SIZE_PIXELS;
 
-				tiles[row][col].drawTile(x, y, g);
+				tiles[row][col].drawTile(x, y, TILE_SIZE_PIXELS, g);
 			}
 		}
 

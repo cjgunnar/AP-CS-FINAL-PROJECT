@@ -8,7 +8,7 @@ public class PlainTile extends Tile
 {
 	private static String[] imageOptions = {"/desert_rock_1.png", "/desert_rock_2.png", "/desert_cactus.png", "/desert_bush.png"};
 	
-	public PlainTile(String biome)
+	public PlainTile(BIOME biome)
 	{
 		super(biome);
 		

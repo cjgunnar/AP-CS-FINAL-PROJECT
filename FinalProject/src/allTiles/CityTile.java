@@ -8,7 +8,7 @@ public class CityTile extends Tile
 {
 	public CityTile()
 	{
-		super("desert");
+		super(BIOME.DESERT);
 		
 		name = "City";
 		
