@@ -57,7 +57,7 @@ public class MapPanel extends JPanel
 		add(ip, BorderLayout.SOUTH);
 		
 		//initialize status panel with values
-		//sp.UpdateInfo();
+		sp.UpdateInfo();
 		
 		//add the input handler to listen for keys
 		addKeyListener(new InputHandler());
@@ -81,21 +81,22 @@ public class MapPanel extends JPanel
 		
 		//System.out.println("Moving player to (" + moveXPos + "," + moveYPos + ")");
 		
-		//check not going off screen
-		/*
-		if(moveXPos < 0) return false;
-		if(moveYPos < 0) return false;
-		if(moveXPos >= TileMap.NUM_COLS) return false;
-		if(moveYPos >= TileMap.NUM_ROWS) return false;
-		*/
+		//check not moving into water
+		if(map.getRelativeTile(dx, dy).biome == Tile.BIOME.OCEAN) return false;
+		
 		
 		player.setX(moveXPos);
 		player.setY(moveYPos);
 		
-		//map.getTile(xPos, yPos).removePerson(player);
-		//map.getTile(moveXPos, moveYPos).addPerson(player);
+		//map.getRelativeTile(0, 0).removePerson(player);
+		map.getRelativeTile(dx, dy).addPerson(player);
+		map.getRelativeTile(dx, dy).hasPlayer = true;
 		
-		//player.setOccupiedTile(map.getTile(moveXPos, moveYPos));
+		//System.out.println("Leaving: " + player.getOccupiedTile());
+		
+		player.setOccupiedTile(map.getRelativeTile(dx, dy));
+		
+		//System.out.println("Player moved to: " + player.getOccupiedTile());
 		
 		/*
 		//make surroundings visible
@@ -125,38 +126,47 @@ public class MapPanel extends JPanel
 			map.getTile(moveXPos + 1, moveYPos + 1).setVisibility(true);
 		*/
 		
-//		//update status if moving was successful
-//		//update based on terrain
-//		if(player.getOccupiedTile().getName().equals("desert"))
-//		{
-//			player.setThirst(player.getThirst() - 5);
-//		}
-//		else if(player.getOccupiedTile().getName().equals("Oasis"))
-//		{
-//			player.setThirst(100);
-//		}
-//		else if(player.getOccupiedTile().getName().equals("City"))
-//		{
-//			player.setThirst(100);
-//		}
-//
-//		if(player.getThirst() < 0)
-//		{
-//			setVisible(false);
-//			//this window is in a jPanel in a jPanel in a layeredPane in a rootPane in a Jpanel in a TileMapWindow
-//			//or something this is just wild west coding
-//			window.showGameOverPanel("You got too thirsty. That happens when wandering the desert. "
-//					+ "Take care of yourself next time, alright? Go stop for a drink. \nYou know you want to.");
-//		}
+		updateThirst();
 		
 		//success
 		return true;
 	}
 	
+	private void updateThirst()
+	{
+		//update status if moving was successful
+		//update based on terrain
+		String biomeName = player.getOccupiedTile().biome.name;
+		String structure = player.getOccupiedTile().structure.name;
+		
+		if(structure.equals("City") || structure.equals("Village"))
+		{
+			player.setThirst(100);
+		}
+		else if(biomeName.equalsIgnoreCase("Desert") || biomeName.equalsIgnoreCase("Tundra") || biomeName.equals("Ice Sheet"))
+		{
+			player.setThirst(player.getThirst() - 5);
+		}
+		else
+		{
+			player.setThirst(player.getThirst() - 2);
+		}
+		
+
+		if(player.getThirst() < 0)
+		{
+			setVisible(false);
+			//this window is in a jPanel in a jPanel in a layeredPane in a rootPane in a Jpanel in a TileMapWindow
+			//or something this is just wild west coding
+			window.showGameOverPanel("You got too thirsty. That happens when wandering around too much. "
+					+ "Take care of yourself next time, alright? Go stop for a drink. \nYou know you want to.");
+		}
+	}
+	
 	public void cycle()
 	{		
 		//update status bar
-		//sp.UpdateInfo();
+		sp.UpdateInfo();
 		
 		
 		//perform other game logic
@@ -168,7 +178,7 @@ public class MapPanel extends JPanel
 		repaint();
 		
 		//run events
-		//player.getOccupiedTile().runEvents(window.getEventPanel());
+		player.getOccupiedTile().runEvents(window.getEventPanel());
 	}
 	
 	/**

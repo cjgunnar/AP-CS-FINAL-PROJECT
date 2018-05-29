@@ -8,14 +8,12 @@ import javax.swing.ImageIcon;
 
 public class Tile
 {
-	protected Image image;
-	
 	private boolean isVisible;
 	
 	private ArrayList<Person> people;
 	
-	protected String name;
 	protected BIOME biome;
+	protected STRUCTURE structure;
 	
 	private Image biomeImage;
 	
@@ -26,9 +24,7 @@ public class Tile
 	public Tile(BIOME biome)
 	{
 		this.biome = biome;
-		
-		name = "default";
-
+		structure = STRUCTURE.NONE;
 		this.biomeImage = new ImageIcon(this.getClass().getResource(biome.imageLocation)).getImage();
 		
 		people = new ArrayList<Person>();
@@ -39,6 +35,12 @@ public class Tile
 		CreateEvents();
 	}
 	
+	public Tile(BIOME biome, STRUCTURE structure)
+	{
+		this(biome);
+		this.structure = structure;
+	}
+	
 	/**
 	 * The types of biomes
 	 * @author Caden
@@ -46,24 +48,47 @@ public class Tile
 	 */
 	public enum BIOME
 	{
-		OCEAN("/biome_ocean.png"),
-		COAST("/biome_coast.png"),
+		OCEAN("Water", "/biome_ocean.png"),
+		COAST("Coast", "/biome_coast.png"),
 		
-		ICE_SHEET("/biome_ice_sheet.png"),
-		TUNDRA("/biome_tundra.png"),
-		PINE_FOREST("/biome_pine_forest.png"),
-		SCHRUBLAND("/biome_schrubland.png"),
-		GRASSLAND("/biome_grassland.png"),
-		DECIDIOUS_FOREST("/biome_decidious_forest.png"),
-		DESERT("/biome_desert.png"),
-		SAVANNA("/biome_savanna.png"),
-		RAINFOREST("/biome_rainforest.png");
+		ICE_SHEET("Ice Sheet", "/biome_ice_sheet.png"),
+		TUNDRA("Tundra", "/biome_tundra.png"),
+		PINE_FOREST("Pine Forest", "/biome_pine_forest.png"),
+		SCHRUBLAND("Schrubland", "/biome_schrubland.png"),
+		GRASSLAND("Grassland", "/biome_grassland.png"),
+		DECIDIOUS_FOREST("Decidious Forest", "/biome_decidious_forest.png"),
+		DESERT("Desert", "/biome_desert.png"),
+		SAVANNA("Savanna", "/biome_savanna.png"),
+		RAINFOREST("Rainforest", "/biome_rainforest.png");
 		
+		public String name;
 		public String imageLocation;
 		
-		private BIOME(String imageLocation)
+		private BIOME(String name, String imageLocation)
 		{
 			this.imageLocation = imageLocation;
+			this.name = name;
+		}
+	}
+	
+	/**
+	 * The structures that can exist on a tile
+	 * @author Caden
+	 *
+	 */
+	public enum STRUCTURE
+	{
+		CITY("City", "/city.png"),
+		VILLAGE("Village", "/village.png"),
+		NONE("", "");
+		
+		public String name;
+		public Image image;
+		
+		private STRUCTURE(String name, String imageLoc)
+		{
+			this.name = name;
+			this.image = new ImageIcon(this.getClass().getResource(imageLoc)).getImage();
 		}
 	}
 	
@@ -159,8 +184,9 @@ public class Tile
 				//draw background
 				g.drawImage(biomeImage, x, y, null);
 				
-				//draw picture
-				g.drawImage(image, x, y, null);
+				//draw strucuture
+				if(structure != STRUCTURE.NONE)
+					g.drawImage(structure.image, x, y, null);
 			}
 			catch(Exception e)
 			{
@@ -171,10 +197,14 @@ public class Tile
 			//draw people
 			for(Person person : people)
 			{
-				if(true) //debug
-				{
+				if(!person.isPlayer)
 					g.drawImage(person.getImage(), x, y, null);
-				}
+			}
+			
+			//draw player last (so over everything)
+			if(hasPlayer)
+			{
+				g.drawImage(MapPanel.player.getImage(), x, y, null);
 			}
 		}
 			
@@ -199,6 +229,15 @@ public class Tile
 		return false;
 	}
 	
+	/**
+	 * Set the structure on this tile
+	 * @param structure
+	 */
+	public void setStructure(STRUCTURE structure)
+	{
+		this.structure = structure;
+	}
+	
 	public void addPerson(Person person)
 	{
 		if(person.isPlayer) hasPlayer = true;
@@ -212,17 +251,13 @@ public class Tile
 	
 	public void removePerson(Person person)
 	{
+		if(person.isPlayer) hasPlayer = false;
 		people.remove(person);
 	}
 	
 	public void addEvent(MapEvent event)
 	{
 		events.add(event);
-	}
-	
-	public String getName()
-	{
-		return name;
 	}
 	
 	public void setVisibility(boolean visibility)
@@ -234,14 +269,15 @@ public class Tile
 	{
 		return isVisible;
 	}
-	
-	public void setImage(Image image)
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
 	{
-		this.image = image;
-	}
-	
-	public Image getImage()
-	{
-		return image;
+		final int maxLen = 10;
+		return "Tile [people=" + (people != null ? people.subList(0, Math.min(people.size(), maxLen)) : null)
+				+ ", biome=" + biome + ", structure=" + structure + ", hasPlayer=" + hasPlayer + "]";
 	}
 }

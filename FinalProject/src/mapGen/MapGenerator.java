@@ -7,6 +7,8 @@ import java.util.List;
 
 import mapClasses.Tile;
 import mapClasses.Tile.BIOME;
+import mapClasses.Tile.STRUCTURE;
+import peopleObjects.Bandit;
 
 /**
  * Generate the TileMap
@@ -24,6 +26,12 @@ public class MapGenerator
 	/** moisture noise generator */
 	OpenSimplexNoise mosGen;
 	
+	/** new random generator */
+	OpenSimplexNoise banditGen;
+	
+	/** Generator for the population */
+	OpenSimplexNoise popGen;
+	
 	/**
 	 * Create a MapGenerator with the specified seed
 	 * @param seed
@@ -31,16 +39,20 @@ public class MapGenerator
 	public MapGenerator(int seed)
 	{
 		this.seed = seed;
+		
+		//create the generators
 		tempGen = new OpenSimplexNoise(seed);
 		mosGen = new OpenSimplexNoise(seed + 1);
+		banditGen = new OpenSimplexNoise(seed + 2);
+		popGen = new OpenSimplexNoise(seed + 3);
 		
 		System.out.println("Generated map with seed: " + seed);
 	}
 	
-	/** Create a MapGenerator with a random seed from 0 to 99 */
+	/** Create a MapGenerator with a random seed from 0 to 99999 */
 	public MapGenerator()
 	{
-		this((int)(Math.random() * 100));
+		this((int)(Math.random() * 100000));
 	}
 	
 	/**
@@ -67,7 +79,7 @@ public class MapGenerator
 			 for(int j = 0; j < size; j++)
 			 {
 				 //generate temperature
-				 double temp = tempGen.eval((x + i) * tempFrq, (y + j) * tempFrq);
+				 double temp = tempGen.eval((x + i + 50) * tempFrq, (y + j) * tempFrq);
 				 temp = Math.pow(temp, tempPow);
 				 
 				 double mos = mosGen.eval((x + i) * mosFrq, (y + j) * mosFrq);
@@ -76,6 +88,32 @@ public class MapGenerator
 				 BIOME biome = getBiome(temp, mos);
 				 
 				 Tile tile = new Tile(biome);
+				 
+				 //population
+				 if(biome != BIOME.OCEAN) //no water cities
+				 {
+					 //calculate population at that spot
+					 double pop = popGen.eval((x + i) * 5, (y + j) * 5);
+					 if(pop > 0.7) //city
+					 {
+						tile.setStructure(STRUCTURE.CITY);
+					 }
+					 else if(pop > 0.5) //village
+					 {
+						 tile.setStructure(STRUCTURE.VILLAGE);
+					 }
+				 }
+				 
+				 //random characters
+				 if(biome != BIOME.OCEAN) //no characters on water
+				 {
+					 if(banditGen.eval((x + i) * 20, (y + j) * 20) > 0.7)
+					 {
+						 //System.out.println("Made a bandit at (" + (x + i) + (y + j) + ")");
+						 tile.addPerson(new Bandit());
+					 } 
+				 }
+				 
 				 map[i][j] = tile;
 			 }
 		 }
