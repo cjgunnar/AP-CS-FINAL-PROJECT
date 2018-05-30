@@ -1,10 +1,18 @@
 package mapClasses;
 
 
+import java.awt.Desktop;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -18,9 +26,10 @@ public class TileMapWindow extends JFrame
 	static final String author = "Caden";
 	
 	static final String title = "Game Window";
-	static final String instructions = "Click OK to start game.\n"
-			+ "Source code for this project is available at: \n" + GIT_HUB_REPO 
-			+ "\nCreated by " + author;
+	static final String instructions = "<html><body>Click OK to start game.<br>"
+			+ "Source code hosted on GitHub<br>"
+			+ "Use WASD to move<br>"
+			+ "Created by " + author + "</body></html>";
 	
 	private MapPanel mapPanel;
 	private EventPanel eventPanel;
@@ -97,7 +106,40 @@ public class TileMapWindow extends JFrame
 			@Override
 			public void run() 
 			{
-				if(JOptionPane.showConfirmDialog(null, instructions, title, 
+				JPanel contentPane = new JPanel();
+				contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+				JButton linkButton = new JButton(GIT_HUB_REPO);
+				linkButton.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent arg0)
+					{
+						if(Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))
+						{
+							try
+							{
+								Desktop.getDesktop().browse(new URI(GIT_HUB_REPO));
+							} catch (IOException e)
+							{
+								linkButton.setText("Error: unsupported browser");
+								linkButton.setEnabled(false);
+							} catch (URISyntaxException e)
+							{
+								linkButton.setText("Error: broken URL");
+								linkButton.setEnabled(false);
+							}
+						}
+						else
+						{
+							linkButton.setText("Error: unsupported device");
+							linkButton.setEnabled(false);
+						}
+					}
+				});
+				
+				contentPane.add(new JLabel(instructions));
+				contentPane.add(linkButton);
+				
+				if(JOptionPane.showConfirmDialog(null, contentPane, title, 
 						JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION)
 				{
 					return;
