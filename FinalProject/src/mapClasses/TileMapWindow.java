@@ -14,7 +14,7 @@ public class TileMapWindow extends JFrame
 	static final int WIDTH = 700;
 	static final int HEIGHT = 615;
 	
-	static final String GIT_HUB_REPO = "[none]";
+	static final String GIT_HUB_REPO = "https://github.com/cjgunnar/AP-CS-FINAL-PROJECT";
 	static final String author = "Caden";
 	
 	static final String title = "Game Window";
