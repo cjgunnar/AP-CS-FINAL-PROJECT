@@ -42,8 +42,10 @@ public class MapPanel extends JPanel
 		sp = new StatusPanel(player);
 		InventoryPanel ip = new InventoryPanel(player);
 		
-		map.getTile(0, 0).setVisibility(true);
-		movePlayer(0, 0);
+		map.setCenterPos(player.getX(), player.getY());
+		
+		//map.getTile(player.getX(), player.getY()).setVisibility(true);
+		movePlayer(player.getX(), player.getY());
 		
 		//refill player thirst at start
 		player.setThirst(100);
@@ -70,27 +72,33 @@ public class MapPanel extends JPanel
 	 * @return true if success, false if no tiles available in that direction
 	 */
 	boolean movePlayer(int dx, int dy)
-	{
-		int xPos = player.getCol();
-		int yPos = player.getRow();
+	{	
+		int xPos = player.getX();
+		int yPos = player.getY();
 		
 		int moveXPos = xPos + dx;
 		int moveYPos = yPos + dy;
 		
-		//check not going off screen
-		if(moveXPos < 0) return false;
-		if(moveYPos < 0) return false;
-		if(moveXPos >= TileMap.NUM_COLS) return false;
-		if(moveYPos >= TileMap.NUM_ROWS) return false;
+		//System.out.println("Moving player to (" + moveXPos + "," + moveYPos + ")");
 		
-		player.setCol(moveXPos);
-		player.setRow(moveYPos);
+		//check not moving into water
+		if(map.getRelativeTile(dx, dy).biome == Tile.BIOME.OCEAN) return false;
 		
-		map.getTile(xPos, yPos).removePerson(player);
-		map.getTile(moveXPos, moveYPos).addPerson(player);
 		
-		player.setOccupiedTile(map.getTile(moveXPos, moveYPos));
+		player.setX(moveXPos);
+		player.setY(moveYPos);
 		
+		//map.getRelativeTile(0, 0).removePerson(player);
+		map.getRelativeTile(dx, dy).addPerson(player);
+		map.getRelativeTile(dx, dy).hasPlayer = true;
+		
+		//System.out.println("Leaving: " + player.getOccupiedTile());
+		
+		player.setOccupiedTile(map.getRelativeTile(dx, dy));
+		
+		//System.out.println("Player moved to: " + player.getOccupiedTile());
+		
+		/*
 		//make surroundings visible
 		//tile above
 		if(map.getTile(moveXPos, moveYPos - 1) != null)
@@ -116,33 +124,43 @@ public class MapPanel extends JPanel
 		//tile lower right
 		if(map.getTile(moveXPos + 1, moveYPos + 1) != null)
 			map.getTile(moveXPos + 1, moveYPos + 1).setVisibility(true);
+		*/
 		
+		updateThirst();
+		
+		//success
+		return true;
+	}
+	
+	private void updateThirst()
+	{
 		//update status if moving was successful
 		//update based on terrain
-		if(player.getOccupiedTile().getName().equals("desert"))
+		String biomeName = player.getOccupiedTile().biome.name;
+		String structure = player.getOccupiedTile().structure.name;
+		
+		if(structure.equals("City") || structure.equals("Village"))
+		{
+			player.setThirst(100);
+		}
+		else if(biomeName.equalsIgnoreCase("Desert") || biomeName.equalsIgnoreCase("Tundra") || biomeName.equals("Ice Sheet"))
 		{
 			player.setThirst(player.getThirst() - 5);
 		}
-		else if(player.getOccupiedTile().getName().equals("Oasis"))
+		else
 		{
-			player.setThirst(100);
+			player.setThirst(player.getThirst() - 2);
 		}
-		else if(player.getOccupiedTile().getName().equals("City"))
-		{
-			player.setThirst(100);
-		}
+		
 
 		if(player.getThirst() < 0)
 		{
 			setVisible(false);
 			//this window is in a jPanel in a jPanel in a layeredPane in a rootPane in a Jpanel in a TileMapWindow
 			//or something this is just wild west coding
-			window.showGameOverPanel("You got too thirsty. That happens when wandering the desert. "
+			window.showGameOverPanel("You got too thirsty. That happens when wandering around too much. "
 					+ "Take care of yourself next time, alright? Go stop for a drink. \nYou know you want to.");
 		}
-		
-		//success
-		return true;
 	}
 	
 	public void cycle()
@@ -153,6 +171,8 @@ public class MapPanel extends JPanel
 		
 		//perform other game logic
 		
+		//regenerate map
+		map.setCenterPos(player.getX(), player.getY());
 		
 		//repaint map
 		repaint();

@@ -7,6 +7,8 @@ import java.util.List;
 
 import mapClasses.Tile;
 import mapClasses.Tile.BIOME;
+import mapClasses.Tile.STRUCTURE;
+import peopleObjects.Bandit;
 
 /**
  * Generate the TileMap
@@ -15,12 +17,132 @@ import mapClasses.Tile.BIOME;
  */
 public class MapGenerator
 {
+	/** The seed of the map */
+	int seed;
+	
+	/** temperature noise generator */
+	OpenSimplexNoise tempGen;
+	
+	/** moisture noise generator */
+	OpenSimplexNoise mosGen;
+	
+	/** new random generator */
+	OpenSimplexNoise banditGen;
+	
+	/** Generator for the population */
+	OpenSimplexNoise popGen;
+	
+	/**
+	 * Create a MapGenerator with the specified seed
+	 * @param seed
+	 */
+	public MapGenerator(int seed)
+	{
+		this.seed = seed;
+		
+		//create the generators
+		tempGen = new OpenSimplexNoise(seed);
+		mosGen = new OpenSimplexNoise(seed + 1);
+		banditGen = new OpenSimplexNoise(seed + 2);
+		popGen = new OpenSimplexNoise(seed + 3);
+		
+		System.out.println("Generated map with seed: " + seed);
+	}
+	
+	/** Create a MapGenerator with a random seed from 0 to 99999 */
+	public MapGenerator()
+	{
+		this((int)(Math.random() * 100000));
+	}
+	
+	/**
+	 * Generates a map area from starting coordinate
+	 * <p>
+	 * Will always generate an exact map from the same coordinates
+	 * @param x left-most x position
+	 * @param y left-most y position
+	 * @param size size of the square map
+	 * @return generated map
+	 */
+	public Tile[][] generateMapArea(int x, int y, int size)
+	{
+		 Tile[][] map = new Tile[size][size];
+		 
+		 final double tempFrq = 0.005;
+		 final double mosFrq = 0.01;
+		 
+		 final double tempPow = 1.5;
+		 final double mosPow = 0.5;
+		 
+		 for(int i = 0; i < size; i++)
+		 {
+			 for(int j = 0; j < size; j++)
+			 {
+				 //generate temperature
+				 double temp = tempGen.eval((x + i + 50) * tempFrq, (y + j) * tempFrq);
+				 temp = Math.pow(temp, tempPow);
+				 
+				 double mos = mosGen.eval((x + i) * mosFrq, (y + j) * mosFrq);
+				 mos = Math.pow(mos, mosPow);
+				 
+				 BIOME biome = getBiome(temp, mos);
+				 
+				 Tile tile = new Tile(biome);
+				 
+				 //population
+				 if(biome != BIOME.OCEAN) //no water cities
+				 {
+					 //calculate population at that spot
+					 double pop = popGen.eval((x + i) * 5, (y + j) * 5);
+					 if(pop > 0.7) //city
+					 {
+						tile.setStructure(STRUCTURE.CITY);
+					 }
+					 else if(pop > 0.5) //village
+					 {
+						 tile.setStructure(STRUCTURE.VILLAGE);
+					 }
+				 }
+				 
+				 //random characters
+				 if(biome != BIOME.OCEAN) //no characters on water
+				 {
+					 if(banditGen.eval((x + i) * 20, (y + j) * 20) > 0.7)
+					 {
+						 //System.out.println("Made a bandit at (" + (x + i) + (y + j) + ")");
+						 tile.addPerson(new Bandit());
+					 } 
+				 }
+				 
+				 map[i][j] = tile;
+			 }
+		 }
+		 
+		 //System.out.println("Generated map at (" + x + "," + y + ") of size " + size);
+		 
+		 return map;
+	}
+	
+	//STATIC METHODS
+	/**
+	 * Generate a fixed-size square map of the given size
+	 * <p>
+	 * Generates a random seed from 0 to 999 inclusive
+	 * @param size of the map
+	 * @return 2D array of generated tiles
+	 */
 	public static Tile[][] generateMap(int size)
 	{
 		int seed = (int)(Math.random() * 1000);
 		return generateMap(seed, size);
 	}
 	
+	/**
+	 * Generate a fixed-size square map of the given size
+	 * @param seed the seed to generate the map with
+	 * @param size the size of the map
+	 * @return
+	 */
 	public static Tile[][] generateMap(int seed, int size)
 	{
 		BIOME[][] biomeMap = generateBiome(seed, size);
@@ -89,7 +211,7 @@ public class MapGenerator
 			for(int col = 0; col < size; col++)
 			{
 				//calculate temp
-				double temp = tempGen.eval(row * frq + 5, col * frq + 5);
+				double temp = tempGen.eval(row * frq, col * frq);
 				
 				temp = Math.pow(temp, power);
 				

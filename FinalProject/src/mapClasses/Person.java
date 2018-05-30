@@ -10,8 +10,8 @@ public class Person
 {
 	Tile occupiedTile;
 	
-	int row;
-	int col;
+	int x;
+	int y;
 
 	protected Image image;
 	
@@ -51,39 +51,39 @@ public class Person
 	}
 	
 	/**
-	 * Gets the row of the tile the person is occupying
+	 * Gets the absolute x of the tile the person is occupying
 	 * @return
 	 */
-	public int getRow()
+	public int getX()
 	{
-		return row;
+		return x;
 	}
 	
 	/**
-	 * Set the row of the tile the person is occupying
-	 * @param row
+	 * Set the absolute x of the tile the person is occupying
+	 * @param x
 	 */
-	public void setRow(int row)
+	public void setX(int x)
 	{
-		this.row = row;
+		this.x = x;
 	}
 	
 	/**
-	 * Get the column of the tile the person is occupying
+	 * Get the absolute y of the tile the person is occupying
 	 * @return
 	 */
-	public int getCol()
+	public int getY()
 	{
-		return col;
+		return y;
 	}
 	
 	/**
-	 * Set the column of the tile the person is occupying
-	 * @param col
+	 * Set the absolute y of the tile the person is occupying
+	 * @param y
 	 */
-	public void setCol(int col)
+	public void setY(int y)
 	{
-		this.col = col;
+		this.y = y;
 	}
 
 	/**
@@ -182,5 +182,14 @@ public class Person
 	public void addGold(int amount)
 	{
 		this.gold += amount;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return name;
 	}
 }
