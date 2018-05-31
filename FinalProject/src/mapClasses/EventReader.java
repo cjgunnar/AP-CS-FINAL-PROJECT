@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.stream.XMLEventReader;
@@ -143,9 +142,9 @@ public class EventReader
 									mapEvent.addPrerequisite(new Prerequisite()
 									{
 										@Override
-										public boolean checkPrerequisite(Player player, List<Person> people)
+										public boolean checkPrerequisite(Player player, Tile tile)
 										{
-											for(Person p : people)
+											for(Person p : tile.getPeople())
 											{
 												if(p.getName().equals(attribute.getValue()))
 												{

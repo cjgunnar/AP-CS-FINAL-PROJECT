@@ -106,7 +106,7 @@ public class EventPanel extends JPanel
 		{
 			for(EventPath option : path.getOptions())
 			{
-				if(!option.hasPrerequisites(MapPanel.player, MapPanel.player.getOccupiedTile().getPeople()))
+				if(!option.hasPrerequisites(MapPanel.player, MapPanel.player.getOccupiedTile()))
 				{
 					continue;
 				}

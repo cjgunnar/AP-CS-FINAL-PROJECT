@@ -62,14 +62,14 @@ public class EventPath
 	/**
 	 * Returns true if all prereq are met
 	 * @param player reference to player
-	 * @param people reference to occupants of Tile
+	 * @param tile
 	 * @return true if all met, false otherwise
 	 */
-	public boolean hasPrerequisites(Player player, List<Person> people)
+	public boolean hasPrerequisites(Player player, Tile tile)
 	{
 		for(Prerequisite prerequisite : prerequisites)
 		{
-			if(!prerequisite.checkPrerequisite(player, people))
+			if(!prerequisite.checkPrerequisite(player, tile))
 			{
 				return false;
 			}
