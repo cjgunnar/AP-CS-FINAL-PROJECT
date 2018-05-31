@@ -12,7 +12,8 @@ public class StatusPanel extends JPanel
 	JLabel health;
 	JLabel thirst;
 	JLabel hunger;
-
+	JLabel gold;
+	
 	public StatusPanel(Player player)
 	{
 		this.player = player;
@@ -25,21 +26,24 @@ public class StatusPanel extends JPanel
 		health = new JLabel("Health");
 		thirst = new JLabel("Thirst");
 		hunger = new JLabel("Hunger");
-
+		gold = new JLabel("Gold");
+		
 		add(location);
 		add(health);
 		add(thirst);
 		add(hunger);
+		add(gold);
 	}
 
 	public void UpdateInfo()
 	{
-		location.setText(player.getOccupiedTile().biome.name + 
-				(!player.getOccupiedTile().structure.name.equals("")? 
-						"" : " " + player.getOccupiedTile().structure.name));
+		String loc = player.getOccupiedTile().biome.name;
+		loc = !player.getOccupiedTile().structure.name.equals("") ? loc + " " +  player.getOccupiedTile().structure.name: loc;
+		location.setText(loc);
 		health.setText("Health: " + player.getHealth());
 		thirst.setText("Thirst: " + player.getThirst());
 		hunger.setText("Hunger: " + player.getHunger());
+		gold.setText("Gold: " + player.getGold());
 	}
 
 }
