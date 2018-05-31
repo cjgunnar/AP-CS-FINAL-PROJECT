@@ -5,8 +5,16 @@
 	<path option="Bandits!">
 		<out>You see a group of bandits</out>
 		<path option="Sneak By">
-			<out>Oh no they got you</out>
-			<gameOver/>
+			<out>They are on to you</out>
+			<path option="Pay up" player.gold=">3">
+				<!-- remove gold -->
+				<out>They take 4 of your gold and send you on your way</out>
+				<returnToMap/>
+			</path>
+			<path option="Run">
+				<out>You trip. Classic move. They shoot you.</out>
+				<gameOver/>
+			</path>
 		</path>
 		<path option="Steal From">
 			<out>Silver and gold</out>

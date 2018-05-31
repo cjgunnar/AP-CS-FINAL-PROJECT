@@ -41,7 +41,7 @@ public class EventReader
 	final static String CONTAINS = "contains";
 	
 	final static String PLAYER = "player";
-	final static String SNEAK = "sneak";
+	final static String GOLD = "gold";
 	
 	//the iterator
 	private static XMLEventReader eventReader;
@@ -130,33 +130,10 @@ public class EventReader
 	
 							String attributeName = attribute.getName().getLocalPart();
 							
-							if(attributeName.substring(0, TILE.length()).equals(TILE))
-							{
-								//is a requirement involving tile
-								String tileReq = attributeName.substring(TILE.length() + 1);
-								
-								//add a prerequisite that the tile must contain a person with name of the attirbute value
-								if(tileReq.equals(CONTAINS))
-								{
-									//System.out.println("Tile must contain: " + attribute.getValue());
-									mapEvent.addPrerequisite(new Prerequisite()
-									{
-										@Override
-										public boolean checkPrerequisite(Player player, Tile tile)
-										{
-											for(Person p : tile.getPeople())
-											{
-												if(p.getName().equals(attribute.getValue()))
-												{
-													return true;
-												}
-											}
-											return false;
-										}
-										
-									});
-								}
-							}
+							Prerequisite prereq = readPrerequisite(attributeName, attribute.getValue());
+							
+							if(prereq != null)
+								mapEvent.addPrerequisite(prereq);
 							
 							else
 								System.out.println("EVENT: WARNING: unrecognized attribute on event: " + attribute.getName().getLocalPart());
@@ -182,18 +159,15 @@ public class EventReader
 						{
 							//create variable for the individual attribute
 							Attribute attribute = attributes.next();
-	
-							//System.out.println("CURRENT ATTRIBUTE: " + attribute.getName().getLocalPart());
 							
-							if(attribute.getName().getLocalPart().equals(PLAYER))
-							{
-								//add a prerequisite for a stat the player has
-							}
-							else if(attribute.getName().getLocalPart().equals(OPTION))
+							Prerequisite prereq = readPrerequisite(attribute.getName().getLocalPart(), attribute.getValue());
+							if(attribute.getName().getLocalPart().equals(OPTION))
 							{
 								//System.out.println("Setting name " + attribute.getValue());
 								path.setName(attribute.getValue());
 							}
+							else if(prereq != null)
+								mapEvent.addPrerequisite(prereq);
 							else
 								System.out.println("EVENT: WARNING: unrecognized attribute on event: " + attribute.getName().getLocalPart());
 							
@@ -298,13 +272,16 @@ public class EventReader
 						{
 							//create variable for the individual attribute
 							Attribute attribute = attributes.next();
-
+							
+							Prerequisite prereq = readPrerequisite(attribute.getName().getLocalPart(), attribute.getValue());
 							//check for the attributes we are looking for and set them
 							if(attribute.getName().getLocalPart().toString().equals(OPTION))
 							{
 								newPath.setName(attribute.getValue());
 								//System.out.println("nested path name : " + attribute.getValue());
 							}
+							else if(prereq != null)
+								newPath.addPrerequisite(prereq);
 						}
 						
 						path.addOption(newPath);
@@ -356,5 +333,108 @@ public class EventReader
 		System.out.println("ERROR: Reached end of path");
 		
 		return path;
+	}
+	
+	private static Prerequisite readPrerequisite(String attributeName, String attributeValue)
+	{
+		if(attributeName.length() > TILE.length() && attributeName.substring(0, TILE.length()).equals(TILE))
+		{
+			//is a requirement involving tile
+			String tileReq = attributeName.substring(TILE.length() + 1);
+			
+			//add a prerequisite that the tile must contain a person with name of the attirbute value
+			if(tileReq.equals(CONTAINS))
+			{
+				//System.out.println("Tile must contain: " + attribute.getValue());
+				return new Prerequisite()
+				{
+					@Override
+					public boolean checkPrerequisite(Player player, Tile tile)
+					{
+						for(Person p : tile.getPeople())
+						{
+							if(p.getName().equals(attributeValue))
+							{
+								return true;
+							}
+						}
+						return false;
+					}
+					
+				};
+			}
+		}
+		
+		//add a prerequiste that the player
+		else if(attributeName.length() > PLAYER.length() && attributeName.substring(0, PLAYER.length()).equals(PLAYER))
+		{
+			String playerReq = attributeName.substring(PLAYER.length() + 1);
+			
+			if(playerReq.equals(GOLD))
+			{
+				// > or < can be put in front, such as player.gold=">5"
+				if(attributeValue.contains("<"))
+				{
+					return new Prerequisite()
+					{
+						@Override
+						public boolean checkPrerequisite(Player player, Tile tile)
+						{
+							try
+							{
+								return player.getGold() < Integer.parseInt(attributeValue.substring(1));
+							}
+							catch(NumberFormatException e)
+							{
+								System.out.println("EVENT READER ERROR: < player.gold attribute non-int: " + attributeValue.substring(1));
+								return false;
+							}
+						}
+					};
+				}
+				else if(attributeValue.contains(">"))
+				{
+					return new Prerequisite()
+					{
+						@Override
+						public boolean checkPrerequisite(Player player, Tile tile)
+						{
+							try
+							{
+								return player.getGold() > Integer.parseInt(attributeValue.substring(1));
+							}
+							catch(NumberFormatException e)
+							{
+								System.out.println("EVENT READER ERROR: > player.gold attribute non-int: " + attributeValue.substring(1));
+								return false;
+							}
+						}
+					};
+				}
+				else //exact value
+				{
+					return new Prerequisite()
+					{
+						@Override
+						public boolean checkPrerequisite(Player player, Tile tile)
+						{
+							try
+							{
+								return player.getGold() == Integer.parseInt(attributeValue);
+							}
+							catch(NumberFormatException e)
+							{
+								System.out.println("EVENT READER ERROR: player.gold attribute non-int: " + attributeValue);
+								return false;
+							}
+						}
+					};
+				}
+			}
+		}
+//		else
+//			System.out.println("PREREQ READER: WARNING: unrecognized attribute on event: " + attributeName);
+		
+		return null;
 	}
 }
