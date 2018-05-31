@@ -3,6 +3,8 @@ package mapClasses;
 import java.util.ArrayList;
 import java.util.List;
 
+import mapClasses.MapEvent.Prerequisite;
+
 /**
  * Represents a branching path of the events
  * @author Caden
@@ -12,14 +14,25 @@ public class EventPath
 	/** The options that this path leads to */
 	private ArrayList<EventPath> options;
 	
+	/** The prerequisistes for this path to be available */
+	ArrayList<Prerequisite> prerequisites;
+	
 	/** The name of this point in the path */
 	String name;
 	
 	/** Context of the path and of the options */
 	String text;
 	
-	/** Is this a dead end path? */
-	boolean end;
+	/** Is this a path that ends the event and returns to map? */
+	boolean endSafe;
+	
+	boolean losePath;
+	
+	/** Default Constructor */
+	public EventPath()
+	{
+		this("none");
+	}
 	
 	/**
 	 * Create an event path that is not an end
@@ -39,9 +52,39 @@ public class EventPath
 	{
 		this.name = name;
 		
-		this.end = end;
+		this.endSafe = end;
+		this.losePath = false;
 		
 		options = new ArrayList<EventPath>();
+		prerequisites = new ArrayList<Prerequisite>();
+	}
+	
+	/**
+	 * Returns true if all prereq are met
+	 * @param player reference to player
+	 * @param people reference to occupants of Tile
+	 * @return true if all met, false otherwise
+	 */
+	public boolean hasPrerequisites(Player player, List<Person> people)
+	{
+		for(Prerequisite prerequisite : prerequisites)
+		{
+			if(!prerequisite.checkPrerequisite(player, people))
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Add a prereq to this path
+	 * @param prereq
+	 */
+	public void addPrerequisite(Prerequisite prereq)
+	{
+		prerequisites.add(prereq);
 	}
 	
 	public List<EventPath> getOptions()
@@ -101,7 +144,21 @@ public class EventPath
 	 */
 	public boolean isEnd()
 	{
-		return end;
+		return endSafe;
+	}
+	
+	public void setEnd(boolean end)
+	{
+		this.endSafe = end;
+	}
+	
+	/**
+	 * sets the name
+	 * @param name
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 	
 	/**
@@ -111,6 +168,31 @@ public class EventPath
 	public String getName()
 	{
 		return name;
+	}
+
+	/**
+	 * @return the losePath
+	 */
+	public boolean isLosePath()
+	{
+		return losePath;
+	}
+
+	/**
+	 * @param losePath the losePath to set
+	 */
+	public void setLosePath(boolean losePath)
+	{
+		this.losePath = losePath;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return "EventPath [name=" + name + ", islosePath=" + losePath + "]";
 	}
 	
 }

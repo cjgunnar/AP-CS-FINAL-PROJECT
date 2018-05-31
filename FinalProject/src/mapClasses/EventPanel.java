@@ -19,9 +19,13 @@ public class EventPanel extends JPanel
 	JButton returnMap;
 	JPanel optionsPanel;
 	
+	boolean displayEvent;
+	
 	public EventPanel(TileMapWindow window)
 	{
 		this.window = window;
+		
+		displayEvent = true;
 		
 		CreateComponents();
 		
@@ -68,8 +72,9 @@ public class EventPanel extends JPanel
 		//display the starting path
 		displayPath(event.getStartPoint());
 		
-		//display this panel and hide others
-		window.showEventPanel();
+		if(displayEvent)
+			//display this panel and hide others
+			window.showEventPanel();
 	}
 	
 	/**
@@ -85,8 +90,15 @@ public class EventPanel extends JPanel
 		testEventName.setText(path.getName());
 		eventText.setText(path.getText());
 		
+		//System.out.println("Displaying " + path);
+		
 		//if the end, show return to map button
-		if(path.isEnd())
+		if(path.isLosePath())
+		{
+			displayEvent = false;
+			window.showGameOverPanel(path.getText());
+		}
+		else if(path.isEnd())
 		{
 			returnMap.setVisible(true);
 		}
@@ -94,6 +106,11 @@ public class EventPanel extends JPanel
 		{
 			for(EventPath option : path.getOptions())
 			{
+				if(!option.hasPrerequisites(MapPanel.player, MapPanel.player.getOccupiedTile().getPeople()))
+				{
+					continue;
+				}
+				
 				JButton optionButton = new JButton(option.getName());
 				optionButton.addActionListener(new ActionListener(){
 

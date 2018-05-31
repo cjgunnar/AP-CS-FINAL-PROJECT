@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<event>
+	<requirements tile.contains="Bandit"/>
+	<path option="Bandits!">
+		<out>You see a group of bandits</out>
+		<path option="Sneak By">
+			<out>Oh no they got you</out>
+			<gameOver/>
+		</path>
+		<path option="Steal From">
+			<out>Silver and gold</out>
+			<returnToMap/>
+		</path>
+		<path option="Chat">
+			<out>They can't be that bad right? You walk up to a bandana-ed youngster and ask him what the buzz is about. He asks you if you have a deathwish.</out>
+			<path option="Yes definitely">
+				<out>He shoots you directly in the face.</out>
+				<gameOver/>
+			</path>
+			<path option="Maybe later">
+				<out>You think about it.</out>
+				<returnToMap/>
+			</path>
+			<path option="No">
+				<out>Then you better get out of my sight.</out>
+				<returnToMap/>
+			</path>
+		</path>
+	</path>
+</event>

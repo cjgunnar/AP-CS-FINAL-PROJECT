@@ -97,11 +97,12 @@ public class Tile
 		//create events
 
 		//create BANDITS event
-		MapEvent bandits = new MapEvent("Bandits!");
+		MapEvent bandits = EventReader.readEvent("Events/BanditEvent.xml");//new MapEvent("Bandits!");
+		/*
 		bandits.addPrerequisite(new MapEvent.Prerequisite(){
 
 			@Override
-			public boolean checkPrerequisite(Player player, ArrayList<Person> people)
+			public boolean checkPrerequisite(Player player, List<Person> people)
 			{
 				//PREREQUSITES
 				//TILE HAS AT LEAST ONE BANDIT
@@ -135,6 +136,7 @@ public class Tile
 
 		talkTo.addOption(yes);
 		talkTo.addOption(no);
+		*/
 
 		events.add(bandits);
 	}

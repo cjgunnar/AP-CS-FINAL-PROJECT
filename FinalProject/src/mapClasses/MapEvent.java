@@ -1,6 +1,7 @@
 package mapClasses;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapEvent
 {
@@ -11,6 +12,12 @@ public class MapEvent
 	
 	/** Start of this events branching */
 	EventPath startPoint;
+	
+	/** Default constructor */
+	public MapEvent()
+	{
+		this("event");
+	}
 	
 	/**
 	 * Create a MapEvent with a name
@@ -76,7 +83,7 @@ public class MapEvent
 	 */
 	public interface Prerequisite
 	{
-		boolean checkPrerequisite(Player player, ArrayList<Person> people);
+		boolean checkPrerequisite(Player player, List<Person> people);
 	}
 	
 	/**
@@ -86,6 +93,11 @@ public class MapEvent
 	public void addPrerequisite(Prerequisite prereq)
 	{
 		prerequisites.add(prereq);
+	}
+	
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 	
 	/**
