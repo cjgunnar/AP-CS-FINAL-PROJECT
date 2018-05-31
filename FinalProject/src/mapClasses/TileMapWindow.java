@@ -40,6 +40,7 @@ public class TileMapWindow extends JFrame
 	public void Restart()
 	{
 		this.dispose();
+		window = null;
 		Start();
 	}
 	
@@ -146,6 +147,7 @@ public class TileMapWindow extends JFrame
 				}
 
 				window = new TileMapWindow();
+				window.showMapPanel();
 				window.setVisible(true);
 			}
 		});
