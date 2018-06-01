@@ -18,7 +18,8 @@
 			</path>
 		</path>
 		<path option="Steal From">
-			<out>Silver and gold</out>
+			<action type="player.addGold">1</action>
+			<out>You steal a handful of silver and gold</out>
 			<returnToMap/>
 		</path>
 		<path option="Chat">

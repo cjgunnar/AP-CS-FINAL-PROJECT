@@ -46,6 +46,7 @@ public class EventReader
 	final static String ACTION = "action";
 	final static String TYPE = "type";
 	final static String REMOVE_GOLD = "removeGold";
+	final static String ADD_GOLD = "addGold";
 	
 	//the iterator
 	private static XMLEventReader eventReader;
@@ -383,6 +384,26 @@ public class EventReader
 							System.out.println("ACTION READER ERROR: non-int value for player.removeGold: " + eventData);
 						}
 						player.setGold(gold - amount);
+					}
+				};
+			}
+			else if(playerReq.equals(ADD_GOLD))
+			{
+				return new Action()
+				{
+					@Override
+					public void performAction(Player player, Tile tile)
+					{
+						int gold = player.getGold();
+						int amount = 0;
+						try
+						{
+							amount = Integer.parseInt(eventData);
+						} catch(NumberFormatException e)
+						{
+							System.out.println("ACTION READER ERROR: non-int value for player.addGold: " + eventData);
+						}
+						player.setGold(gold + amount);
 					}
 				};
 			}
