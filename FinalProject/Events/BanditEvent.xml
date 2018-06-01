@@ -8,6 +8,7 @@
 			<out>They are on to you</out>
 			<path option="Pay up" player.gold=">3">
 				<!-- remove gold -->
+				<action type="player.removeGold">4</action>
 				<out>They take 4 of your gold and send you on your way</out>
 				<returnToMap/>
 			</path>

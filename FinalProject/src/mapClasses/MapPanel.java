@@ -96,36 +96,6 @@ public class MapPanel extends JPanel
 		
 		player.setOccupiedTile(map.getRelativeTile(dx, dy));
 		
-		//System.out.println("Player moved to: " + player.getOccupiedTile());
-		
-		/*
-		//make surroundings visible
-		//tile above
-		if(map.getTile(moveXPos, moveYPos - 1) != null)
-			map.getTile(moveXPos, moveYPos - 1).setVisibility(true);
-		//tile below
-		if(map.getTile(moveXPos, moveYPos + 1) != null)
-			map.getTile(moveXPos, moveYPos + 1).setVisibility(true);
-		//tile left
-		if(map.getTile(moveXPos - 1, moveYPos) != null)
-			map.getTile(moveXPos - 1, moveYPos).setVisibility(true);
-		//tile right
-		if(map.getTile(moveXPos + 1, moveYPos) != null)
-			map.getTile(moveXPos + 1, moveYPos).setVisibility(true);
-		//tile upper left
-		if(map.getTile(moveXPos - 1, moveYPos - 1) != null)
-			map.getTile(moveXPos - 1, moveYPos - 1).setVisibility(true);
-		//tile upper right
-		if(map.getTile(moveXPos - 1, moveYPos + 1) != null)
-			map.getTile(moveXPos - 1, moveYPos + 1).setVisibility(true);
-		//tile lower left
-		if(map.getTile(moveXPos + 1, moveYPos - 1) != null)
-			map.getTile(moveXPos + 1, moveYPos - 1).setVisibility(true);
-		//tile lower right
-		if(map.getTile(moveXPos + 1, moveYPos + 1) != null)
-			map.getTile(moveXPos + 1, moveYPos + 1).setVisibility(true);
-		*/
-		
 		updateThirst();
 		
 		//success
@@ -164,12 +134,8 @@ public class MapPanel extends JPanel
 	}
 	
 	public void cycle()
-	{		
-		//update status bar
-		sp.UpdateInfo();
-		
-		
-		//perform other game logic
+	{				
+		//perform game logic
 		
 		//regenerate map
 		map.setCenterPos(player.getX(), player.getY());
@@ -179,6 +145,9 @@ public class MapPanel extends JPanel
 		
 		//run events
 		player.getOccupiedTile().runEvents(window.getEventPanel());
+		
+		//update status bar
+		sp.UpdateInfo();
 	}
 	
 	/**

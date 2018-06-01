@@ -17,6 +17,9 @@ public class EventPath
 	/** The prerequisistes for this path to be available */
 	ArrayList<Prerequisite> prerequisites;
 	
+	/** List of actions to be executed */
+	ArrayList<Action> actions;
+	
 	/** The name of this point in the path */
 	String name;
 	
@@ -57,6 +60,7 @@ public class EventPath
 		
 		options = new ArrayList<EventPath>();
 		prerequisites = new ArrayList<Prerequisite>();
+		actions = new ArrayList<Action>();
 	}
 	
 	/**
@@ -119,6 +123,12 @@ public class EventPath
 		this.text = text;
 	}
 	
+	public void runActions(Player player, Tile tile)
+	{
+		for(Action action : actions)
+			action.performAction(player, tile);
+	}
+	
 	/**
 	 * Return the option with the name. Case insensitive
 	 * @param name
@@ -136,6 +146,24 @@ public class EventPath
 		
 		//no EventPath of that name
 		return null;
+	}
+	
+	/**
+	 * add an action
+	 * @param action
+	 */
+	public void addAction(Action action)
+	{
+		actions.add(action);
+	}
+	
+	/**
+	 * gets the actions
+	 * @return
+	 */
+	public List<Action> getActions()
+	{
+		return actions;
 	}
 	
 	/**

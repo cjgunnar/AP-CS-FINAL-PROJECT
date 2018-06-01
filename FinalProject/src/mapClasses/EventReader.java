@@ -43,6 +43,10 @@ public class EventReader
 	final static String PLAYER = "player";
 	final static String GOLD = "gold";
 	
+	final static String ACTION = "action";
+	final static String TYPE = "type";
+	final static String REMOVE_GOLD = "removeGold";
+	
 	//the iterator
 	private static XMLEventReader eventReader;
 
@@ -290,6 +294,27 @@ public class EventReader
 					{
 						path.setText(eventData);
 					}
+					else if(elementName.equals(ACTION))
+					{
+						@SuppressWarnings("unchecked")
+						Iterator<Attribute> attributes = startElement.getAttributes();
+						
+						//while the iterator has more attributes to go over
+						while(attributes.hasNext())
+						{
+							//create variable for the individual attribute
+							Attribute attribute = attributes.next();
+							
+							if(attribute.getName().getLocalPart().equals(TYPE))
+							{
+								Action action = readAction(attribute.getValue(), eventData);
+								path.addAction(action);
+								//System.out.println("Added action " + attribute.getValue() + " to path");
+							}
+							else
+								System.out.println("READER: PATH: ACTION: WARNING: unkown attribute: " + attribute.getName().getLocalPart());
+						}
+					}
 					else if(elementName.equals(GAME_OVER))
 					{
 						path.setLosePath(true);
@@ -333,6 +358,40 @@ public class EventReader
 		System.out.println("ERROR: Reached end of path");
 		
 		return path;
+	}
+	
+	private static Action readAction(String type, String eventData)
+	{
+		//action involving player
+		if(type.length() > PLAYER.length() && type.substring(0, PLAYER.length()).equals(PLAYER))
+		{
+			String playerReq = type.substring(PLAYER.length() + 1);
+			if(playerReq.equals(REMOVE_GOLD))
+			{
+				return new Action()
+				{
+					@Override
+					public void performAction(Player player, Tile tile)
+					{
+						int gold = player.getGold();
+						int amount = 0;
+						try
+						{
+							amount = Integer.parseInt(eventData);
+						} catch(NumberFormatException e)
+						{
+							System.out.println("ACTION READER ERROR: non-int value for player.removeGold: " + eventData);
+						}
+						player.setGold(gold - amount);
+					}
+				};
+			}
+		}
+		
+		System.out.println("ACTION READER: Returned null for " + type + " " + eventData);
+		
+		//no match
+		return null;
 	}
 	
 	private static Prerequisite readPrerequisite(String attributeName, String attributeValue)

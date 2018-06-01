@@ -19,7 +19,11 @@ public class EventPanel extends JPanel
 	JButton returnMap;
 	JPanel optionsPanel;
 	
+	/** should this display events? */
 	boolean displayEvent;
+	
+	/** path to display */
+	EventPath path;
 	
 	public EventPanel(TileMapWindow window)
 	{
@@ -86,11 +90,11 @@ public class EventPanel extends JPanel
 		//reset options panel
 		optionsPanel.removeAll();
 		
+		this.path = path;
+		
 		//set the text
 		testEventName.setText(path.getName());
 		eventText.setText(path.getText());
-		
-		//System.out.println("Displaying " + path);
 		
 		//if the end, show return to map button
 		if(path.isLosePath())
@@ -117,6 +121,7 @@ public class EventPanel extends JPanel
 					@Override
 					public void actionPerformed(ActionEvent e)
 					{
+						path.runActions(MapPanel.player, MapPanel.player.getOccupiedTile());
 						displayPath(path.pickOption(option.getName()));
 						
 					}
@@ -137,6 +142,7 @@ public class EventPanel extends JPanel
 	
 	public void returnToMap()
 	{
+		path.runActions(MapPanel.player, MapPanel.player.getOccupiedTile());
 		window.showMapPanel();
 	}
 }
