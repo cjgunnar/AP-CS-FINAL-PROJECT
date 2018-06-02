@@ -92,9 +92,10 @@ public class MapPanel extends JPanel
 		map.getRelativeTile(dx, dy).addPerson(player);
 		map.getRelativeTile(dx, dy).hasPlayer = true;
 		
-		//System.out.println("Leaving: " + player.getOccupiedTile());
 		
 		player.setOccupiedTile(map.getRelativeTile(dx, dy));
+		
+		//System.out.println("Entering: " + player.getOccupiedTile());
 		
 		updateThirst();
 		

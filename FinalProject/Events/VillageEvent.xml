@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<event>
+	<requirements tile.structure="Village"/>
+	<path option="Small Village">
+		<out>You approach a small village.</out>
+		<path option="Stop By">
+			<out>The village has a bar, hotel, and a blacksmith</out>
+			<path option="Go to Bar">
+				<out>You have way too much to drink and are run out of town.</out>
+				<returnToMap/>
+			</path>
+			<path option="Go to Hotel">
+				<out>You grab a bite to eat and a drink, but decide you won't be staying</out>
+				<returnToMap/>
+			</path>
+			<path option="Go to Blacksmith">
+				<out>The blacksmith looks up from his hammer and anvil.</out>
+				<path option="Chat">
+					<out>He says if you aren't here to buy anything then you better leave.</out>
+					<returnToMap/>
+				</path>
+			</path>
+			<path option="Leave">
+				<out>You've seen enough of this town.</out>
+				<returnToMap/>
+			</path>
+		</path>
+		<path option="Go Around">
+			<out>You simply can't be bothered.</out>
+			<returnToMap/>
+		</path>
+	</path>
+</event>

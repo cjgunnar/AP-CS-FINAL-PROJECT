@@ -97,9 +97,14 @@ public class Tile
 		//create events
 
 		//create BANDITS event
-		MapEvent bandits= EventReader.readEvent("/BanditEvent.xml");
-
-		events.add(bandits);
+		events.add(EventReader.readEvent("/BanditEvent.xml"));
+		//add VILLAGE event
+		MapEvent village = EventReader.readEvent("/VillageEvent.xml");
+		if(village == null)
+		{
+			System.out.println("Error reading village");
+		}
+		events.add(village);
 	}
 	
 	/**

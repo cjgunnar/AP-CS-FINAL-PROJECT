@@ -37,6 +37,7 @@ public class EventReader
 	
 	final static String TILE = "tile";
 	final static String CONTAINS = "contains";
+	final static String STRUCTURE = "structure";
 	
 	final static String PLAYER = "player";
 	final static String GOLD = "gold";
@@ -96,7 +97,7 @@ public class EventReader
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 			
 			//create the input stream to create the event reader
-			InputStream in = EventReader.class.getClass().getResourceAsStream("/BanditEvent.xml");
+			InputStream in = EventReader.class.getClass().getResourceAsStream(eventFile);
 			
 			if(in == null)
 			{
@@ -425,7 +426,7 @@ public class EventReader
 		{
 			//is a requirement involving tile
 			String tileReq = attributeName.substring(TILE.length() + 1);
-			
+			//System.out.println(tileReq);
 			//add a prerequisite that the tile must contain a person with name of the attirbute value
 			if(tileReq.equals(CONTAINS))
 			{
@@ -437,7 +438,7 @@ public class EventReader
 					{
 						for(Person p : tile.getPeople())
 						{
-							if(p.getName().equals(attributeValue))
+							if(p.getName().equalsIgnoreCase(attributeValue))
 							{
 								return true;
 							}
@@ -445,6 +446,19 @@ public class EventReader
 						return false;
 					}
 					
+				};
+			}
+			else if(tileReq.equals(STRUCTURE))
+			{
+				//System.out.println("Adding new structure prereq: " + attributeName + " " + attributeValue);
+				return new Prerequisite()
+				{
+					@Override
+					public boolean checkPrerequisite(Player player, Tile tile)
+					{
+						return (tile.structure.toString().equalsIgnoreCase(attributeValue));
+					}
+
 				};
 			}
 		}
