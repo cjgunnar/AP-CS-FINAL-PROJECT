@@ -1,8 +1,6 @@
 package mapClasses;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -96,10 +94,16 @@ public class EventReader
 		{
 			//create the inputfactory to create the event reader
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-	
+			
 			//create the input stream to create the event reader
-			InputStream in = new FileInputStream(eventFile);
-	
+			InputStream in = EventReader.class.getClass().getResourceAsStream("/BanditEvent.xml");
+			
+			if(in == null)
+			{
+				System.out.println("ERROR: could not find resource");
+				return null;
+			}
+			
 			//finally create the event reader
 			eventReader = inputFactory.createXMLEventReader(in);
 	
@@ -204,11 +208,11 @@ public class EventReader
 	
 		}
 		//If file not found, display error message to console
-		catch(FileNotFoundException e)
-		{
-			System.out.println("EVENT READER ERROR: Did not find file: " + eventFile);
-			return null;
-		}
+//		catch(FileNotFoundException e)
+//		{
+//			System.out.println("EVENT READER ERROR: Did not find file: " + eventFile);
+//			return null;
+//		}
 		catch(XMLStreamException e)
 		{
 			

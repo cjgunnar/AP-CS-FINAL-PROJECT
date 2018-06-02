@@ -143,6 +143,7 @@ public class TileMapWindow extends JFrame
 				if(JOptionPane.showConfirmDialog(null, contentPane, title, 
 						JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION)
 				{
+					if(window != null) window.dispose();
 					return;
 				}
 
