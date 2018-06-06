@@ -35,6 +35,8 @@ public class EventReader
 	final static String RETURN_TO_MAP = "returnToMap";
 	final static String GAME_OVER = "gameOver";
 	
+	final static String RAND = "rand";
+	
 	final static String TILE = "tile";
 	final static String CONTAINS = "contains";
 	final static String STRUCTURE = "structure";
@@ -477,7 +479,34 @@ public class EventReader
 	
 	private static Prerequisite readPrerequisite(String attributeName, String attributeValue)
 	{
-		if(attributeName.length() > TILE.length() && attributeName.substring(0, TILE.length()).equals(TILE))
+		//involves RNG
+		if(attributeName.equals(RAND))
+		{
+			return new Prerequisite()
+			{
+				@Override
+				public boolean checkPrerequisite(Player player, Tile tile)
+				{
+					/*
+					 * If rand="0.2", then event will run 20% of the time
+					 */
+					
+					double percent = 0;
+					try
+					{
+						percent = Double.parseDouble(attributeValue);
+					}
+					catch(NumberFormatException e)
+					{
+						System.out.println("PREREQ READER ERROR: non-double rand value");
+					}
+					return (Math.random() < percent);
+				}
+				
+			};
+		}
+		
+		else if(attributeName.length() > TILE.length() && attributeName.substring(0, TILE.length()).equals(TILE))
 		{
 			//is a requirement involving tile
 			String tileReq = attributeName.substring(TILE.length() + 1);
