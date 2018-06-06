@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<event>
+	<requirements tile.structure="City"/>
+	<path option="Large City">
+		<out>You enter a large city. There is a 4-star hotel, high-class bar, mayor's office, and police station</out>
+			<path option="Go to Bar">
+				<out>The place is bustling with activity</out>
+				<path option="Buy Drink (-3 Gold)" player.gold=">2">
+					<out>You sip down the drink, and feel your strength increase. (Water Restored)</out>
+					<action type="player.fillWater"/>
+					<action type="player.removeGold">3</action>
+					<returnToMap/>
+				</path>
+				<path option="Buy Food (-4 Gold)" player.gold=">3">
+					<out>You wolf down a well-portioned plate of food, then relax on a full stomach.</out>
+					<action type="player.removeGold">4</action>
+					<!-- fill food -->
+					<returnToMap/>
+				</path>
+				<path option="You have no money. Leave." player.gold="&lt;2">
+					<out>You walk out empty handed.</out>
+					<returnToMap/>
+				</path>
+				<path option="Leave" player.gold=">1">
+					<out>There's nothing you need here.</out>
+					<returnToMap/>
+				</path>
+			</path>
+			<path option="Go to Hotel">
+				<out>The owner looks up from his desk. "Come, weary traveler," he says, "let's find you a room"</out>
+				<path option="Get in Room (-5 gold)" player.gold=">4">
+					<out>You rest exceptionally well, and when you get up, you notice several people enjoying biscuits that were set out for breakfast.</out>
+					<action type="player.removeGold">4</action>
+					<!-- regain health, food -->
+					<returnToMap/>
+				</path>
+				<path option="Sleep Outside Instead">
+					<out>You don't have that kind of money to spend. The manager looks on you with pity as you step out.</out>
+					<path option="Sleep in Alley">
+						<out>You pick out an alleyway that looks slightly better than the others, and set your head down.
+Sometime in the night, you jolt awake. A man is going through your bag.</out>
+						<path option="Scare Him Off">
+							<out>You sit up and start moving towards him. He notices you and books down the alley.</out>
+							<path option="Check Bag" player.gold=">1">
+								<out>Looks like he took some of your gold. It's best to move on.</out>
+								<action type="player.removeGold">2</action>
+								<returnToMap/>
+							</path>
+							<path option="Check Bag" player.gold="&lt;2">
+								<out>You are relieved to see he didn't take much. You decide it is best to leave the city</out>
+								<returnToMap/>
+							</path>
+						</path>
+						<path option="Fight Him">
+							<out>You quickly stand up and raise your fists. He notices you and runs the opposite direction.</out>
+							<path option="Check Bag">
+								<out>You scared him off before he could take anything. Regardless, you think it's time to leave the city.</out>
+								<returnToMap/>
+							</path>
+						</path>
+					</path>
+					<path option="Sleep in Woods">
+						<out>Besides the terrible back cramps you sleep fine out in the nearby woods.</out>
+						<returnToMap/>
+					</path>
+				</path>
+			</path>
+			<path option="See Mayor">
+				<out>You stroll up to city hall, and notice a large demonstration and a heavy police presence</out>
+				<path option="Leave">
+					<out>You don't want any part in what might go down.</out>
+					<returnToMap/>
+				</path>
+			</path>
+			<path option="Go to Police">
+				<out>You walk into the police station.</out>
+				<path option="Talk to Receptionist">
+					<out>You attempt to talk to the receptionist. He seems to have at least two people on hold and is frantically writing down notes from a third conversation.
+"Unless it's an emergency, get lost. We are very busy". You don't see the point in sticking around.</out>
+					<returnToMap/>
+				</path>
+				<path option="Sneak About">
+					<out>You make it about halfway down the hall before you are arrested.</out>
+					<gameOver/>
+				</path>
+				<path option="Leave">
+					<out>There's nothing you need here.</out>
+					<returnToMap/>
+				</path>
+			</path>
+			<path option="Leave">
+				<out>You've seen enough of this city.</out>
+				<returnToMap/>
+			</path>
+		</path>
+</event>
