@@ -95,16 +95,13 @@ public class Tile
 	private void CreateEvents()
 	{
 		//create events
-
-		//create BANDITS event
-		events.add(EventReader.readEvent("/BanditEvent.xml"));
-		//add VILLAGE event
-		MapEvent village = EventReader.readEvent("/VillageEvent.xml");
-		if(village == null)
+		String[] eventNames = {"/BanditEvent.xml", "/VillageEvent.xml", "/CityEvent.xml"};
+		
+		for(String eventName : eventNames)
 		{
-			System.out.println("Error reading village");
+			MapEvent event = EventReader.readEvent(eventName);
+			events.add(event);
 		}
-		events.add(village);
 	}
 	
 	/**

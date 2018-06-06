@@ -93,12 +93,12 @@ public class MapGenerator
 				 if(biome != BIOME.OCEAN) //no water cities
 				 {
 					 //calculate population at that spot
-					 double pop = popGen.eval((x + i) * 5, (y + j) * 5);
+					 double pop = popGen.eval((x + i) * 7, (y + j) * 7);
 					 if(pop > 0.7) //city
 					 {
 						tile.setStructure(STRUCTURE.CITY);
 					 }
-					 else if(pop > 0.5) //village
+					 else if(pop > 0.6) //village
 					 {
 						 tile.setStructure(STRUCTURE.VILLAGE);
 					 }
