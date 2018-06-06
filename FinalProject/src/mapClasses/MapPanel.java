@@ -108,13 +108,8 @@ public class MapPanel extends JPanel
 		//update status if moving was successful
 		//update based on terrain
 		String biomeName = player.getOccupiedTile().biome.name;
-		String structure = player.getOccupiedTile().structure.name;
 		
-		if(structure.equals("City") || structure.equals("Village"))
-		{
-			player.setThirst(100);
-		}
-		else if(biomeName.equalsIgnoreCase("Desert") || biomeName.equalsIgnoreCase("Tundra") || biomeName.equals("Ice Sheet"))
+		if(biomeName.equalsIgnoreCase("Desert") || biomeName.equalsIgnoreCase("Tundra") || biomeName.equals("Ice Sheet"))
 		{
 			player.setThirst(player.getThirst() - 5);
 		}

@@ -7,18 +7,64 @@
 		<path option="Stop By">
 			<out>The village has a bar, hotel, and a blacksmith</out>
 			<path option="Go to Bar">
-				<out>You have way too much to drink and are run out of town.</out>
-				<returnToMap/>
+				<out>It isn't the nicest looking place.</out>
+				<path option="Buy Drink (-2 Gold)" player.gold=">1">
+					<out>You get the foul-tasting liquid down your throat and leave. (Water Restored)</out>
+					<action type="player.fillWater"/>
+					<action type="player.removeGold">2</action>
+					<returnToMap/>
+				</path>
+				<path option="Buy Food (-3 Gold)" player.gold=">2">
+					<out>You fill up on some hardly-stale bread.</out>
+					<action type="player.removeGold">3</action>
+					<!-- fill food -->
+					<returnToMap/>
+				</path>
+				<path option="You have no money. Leave." player.gold="&lt;2">
+					<out>You walk out empty handed.</out>
+					<returnToMap/>
+				</path>
+				<path option="Leave" player.gold=">1">
+					<out>There's nothing you need here.</out>
+					<returnToMap/>
+				</path>
 			</path>
 			<path option="Go to Hotel">
-				<out>You grab a bite to eat and a drink, but decide you won't be staying</out>
-				<returnToMap/>
+				<out>The hotel has some vacancies. You could get a room and rest up. The owner says one night will cost you 4 gold.</out>
+				<path option="Stay in Room (-4 gold)" player.gold=">3">
+					<out>You rest. In the morning you check out and leave town.</out>
+					<action type="player.removeGold">4</action>
+					<!-- regain health -->
+					<returnToMap/>
+				</path>
+				<path option="Sleep Outside Instead">
+					<out>You don't have that kind of money to spend.</out>
+					<returnToMap/>
+				</path>
 			</path>
 			<path option="Go to Blacksmith">
 				<out>The blacksmith looks up from his hammer and anvil.</out>
 				<path option="Chat">
 					<out>He says if you aren't here to buy anything then you better leave.</out>
 					<returnToMap/>
+				</path>
+				<path option="Purchase Item">
+					<out>You realize you do not have enough money for his items.</out>
+					<path option="Steal">
+						<out>You pretend to examine his items while you wait for him to look away. Out of the corner of your eye, you see that he reaching down under his desk.</out>
+						<path option="Go for It">
+							<out>You wrap your fingers around the weapon. You're on your way out the door when you realize what he was reaching for: a gun</out>
+							<gameOver/>
+						</path>
+						<path option="Leave">
+							<out>You mutter something about not being interested and quickly walk out the front door.</out>
+							<returnToMap/>
+						</path>
+					</path>
+					<path option="Leave">
+						<out>Oh well, you don't know how to wield a sword anyways.</out>
+						<returnToMap/>
+					</path>
 				</path>
 			</path>
 			<path option="Leave">

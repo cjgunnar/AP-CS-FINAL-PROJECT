@@ -41,8 +41,8 @@ public class StatusPanel extends JPanel
 		loc = !player.getOccupiedTile().structure.name.equals("") ? loc + " " +  player.getOccupiedTile().structure.name: loc;
 		location.setText(loc);
 		health.setText("Health: " + player.getHealth());
-		thirst.setText("Thirst: " + player.getThirst());
-		hunger.setText("Hunger: " + player.getHunger());
+		thirst.setText("Water: " + player.getThirst());
+		hunger.setText("Food: " + player.getHunger());
 		gold.setText("Gold: " + player.getGold());
 	}
 

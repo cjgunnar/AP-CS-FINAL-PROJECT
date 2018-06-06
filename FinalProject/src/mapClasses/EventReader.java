@@ -47,6 +47,10 @@ public class EventReader
 	final static String REMOVE_GOLD = "removeGold";
 	final static String ADD_GOLD = "addGold";
 	
+	final static String FILL_THIRST = "fillWater";
+	final static String REMOVE_THIRST = "removeWater";
+	final static String ADD_THIRST = "addWater";
+	
 	//the iterator
 	private static XMLEventReader eventReader;
 
@@ -409,6 +413,57 @@ public class EventReader
 							System.out.println("ACTION READER ERROR: non-int value for player.addGold: " + eventData);
 						}
 						player.setGold(gold + amount);
+					}
+				};
+			}
+			else if(playerReq.equals(FILL_THIRST))
+			{
+				return new Action()
+				{
+					@Override
+					public void performAction(Player player, Tile tile)
+					{
+						player.setThirst(100);
+					}
+				};
+			}
+			else if(playerReq.equals(ADD_THIRST))
+			{
+				return new Action()
+				{
+					@Override
+					public void performAction(Player player, Tile tile)
+					{
+						int water = player.getThirst();
+						int amount = 0;
+						try
+						{
+							amount = Integer.parseInt(eventData);
+						} catch(NumberFormatException e)
+						{
+							System.out.println("ACTION READER ERROR: non-int value for player.addWater: " + eventData);
+						}
+						player.setThirst(water + amount);
+					}
+				};
+			}
+			else if(playerReq.equals(REMOVE_THIRST))
+			{
+				return new Action()
+				{
+					@Override
+					public void performAction(Player player, Tile tile)
+					{
+						int water = player.getThirst();
+						int amount = 0;
+						try
+						{
+							amount = Integer.parseInt(eventData);
+						} catch(NumberFormatException e)
+						{
+							System.out.println("ACTION READER ERROR: non-int value for player.removeWater: " + eventData);
+						}
+						player.setThirst(water + amount);
 					}
 				};
 			}

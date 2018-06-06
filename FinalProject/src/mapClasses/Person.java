@@ -136,10 +136,15 @@ public class Person
 	}
 
 	/**
-	 * @param hunger the hunger to set
+	 * @param hunger the hunger to set. Can't exceed 100
 	 */
 	public void setHunger(int hunger)
 	{
+		if(hunger > 100)
+		{
+			hunger = 100;
+		}
+		
 		this.hunger = hunger;
 	}
 
@@ -156,6 +161,10 @@ public class Person
 	 */
 	public void setThirst(int thirst)
 	{
+		if(thirst > 100)
+		{
+			thirst = 100;
+		}
 		this.thirst = thirst;
 	}
 
