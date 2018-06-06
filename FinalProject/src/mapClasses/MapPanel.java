@@ -181,22 +181,23 @@ public class MapPanel extends JPanel
 			if(key == UP)
 			{
 				movePlayer(0, -1);
+				cycle();
 			}
 			else if(key == DOWN)
 			{
 				movePlayer(0, 1);
+				cycle();
 			}
 			else if(key == LEFT)
 			{
 				movePlayer(-1, 0);
+				cycle();
 			}
 			else if(key == RIGHT)
 			{
 				movePlayer(1, 0);
+				cycle();
 			}
-			
-			//everytime player moves, update everything
-			cycle();
 		}
 		
 		@Override
