@@ -29,7 +29,7 @@
 			</path>
 			<path option="Go to Hotel">
 				<out>The owner looks up from his desk. "Come, weary traveler," he says, "let's find you a room"</out>
-				<path option="Get in Room (-5 gold)" player.gold=">4">
+				<path option="Get a Room (-5 gold)" player.gold=">4">
 					<out>You rest exceptionally well, and when you get up, you notice several people enjoying biscuits that were set out for breakfast.</out>
 					<action type="player.removeGold">4</action>
 					<!-- regain health, food -->
@@ -61,7 +61,7 @@ Sometime in the night, you jolt awake. A man is going through your bag.</out>
 						</path>
 					</path>
 					<path option="Sleep in Woods">
-						<out>Besides the terrible back cramps you sleep fine out in the nearby woods.</out>
+						<out>Besides the terrible back cramps, you sleep fine out in the nearby woods.</out>
 						<returnToMap/>
 					</path>
 				</path>

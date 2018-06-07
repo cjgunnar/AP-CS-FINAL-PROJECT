@@ -1,9 +1,12 @@
 package mapClasses;
 
-import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,14 +31,18 @@ public class GameOverPanel extends JPanel
 	
 	private void CreateComponents()
 	{
-		setLayout(new FlowLayout(FlowLayout.CENTER));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		deathMessage = new JLabel("You Have Died. Shame.");
+		deathMessage.setFont(new Font("Arial", Font.PLAIN, 45));
+		deathMessage.setAlignmentX(CENTER_ALIGNMENT);
 		
 		deathReason = new JTextArea("Here's how.", 10, 10);
 		deathReason.setEditable(false);
+		deathReason.setFont(new Font("Arial", Font.PLAIN, 23));
 		
 		restartButton = new JButton("Restart");
+		restartButton.setAlignmentX(CENTER_ALIGNMENT);
 		restartButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -47,8 +54,11 @@ public class GameOverPanel extends JPanel
 		});
 		
 		add(deathMessage);
+		add(Box.createRigidArea(new Dimension(10, 50)));
 		add(deathReason);
+		add(Box.createRigidArea(new Dimension(10, 50)));
 		add(restartButton);
+		add(Box.createRigidArea(new Dimension(10, 10)));
 	}
 	
 	public void Display(String deathReasonText)

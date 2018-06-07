@@ -1,9 +1,12 @@
 package mapClasses;
 
-import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,9 +41,11 @@ public class EventPanel extends JPanel
 	
 	private void CreateComponents()
 	{
-		setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		testEventName = new JLabel();
+		testEventName.setFont(new Font("Arial", Font.PLAIN, 45));
+		testEventName.setAlignmentX(CENTER_ALIGNMENT);
 		
 		returnMap = new JButton("Return to Map");
 		returnMap.addActionListener(new ActionListener(){
@@ -56,11 +61,15 @@ public class EventPanel extends JPanel
 		
 		eventText = new JTextArea(10, 10);
 		eventText.setEditable(false);
+		eventText.setFont(new Font("Arial", Font.PLAIN, 24));
+		eventText.setWrapStyleWord(true);
 		
 		optionsPanel = new JPanel();
 		
 		add(testEventName);
+		add(Box.createRigidArea(new Dimension(10, 50)));
 		add(eventText);
+		add(Box.createRigidArea(new Dimension(10, 50)));
 		add(optionsPanel);
 		add(returnMap);
 	}
